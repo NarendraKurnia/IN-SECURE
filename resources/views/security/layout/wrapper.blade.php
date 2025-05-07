@@ -1,0 +1,5 @@
+@include('security/layout/head')
+@include('security/layout/header')
+@include('security/layout/menu')
+@include($content)
+@include('security/layout/footer')

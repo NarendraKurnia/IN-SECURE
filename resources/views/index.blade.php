@@ -79,9 +79,11 @@
                         <p class="card-title">SURVEI TENTANG ANTI SEXUAL HARASSMENT & INDIKATOR RESPECTFUL WORKPLACE POLICY </p>
                         <hr style="border: 1px solid black;">
                         <hr style="border: 1px solid black mt-5;">
-                    <div class="detail">
-                        <i class="bi bi-arrow-right-short"></i> Isi Survei...
-                    </div>
+                        <div class="detail">
+                          <a href="https://docs.google.com/forms/d/e/1FAIpQLScT1FeUaA6VXNFlpcwSSMCHuRRP2rONxaVCKIOBy8IQMW8fKg/viewform?usp=header" target="_blank" style="text-decoration: none;">
+                            <i class="bi bi-arrow-right-short"></i> Isi Survey
+                          </a>
+                        </div>
                 </div>
             </div>
         </div>
