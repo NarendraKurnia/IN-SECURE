@@ -69,7 +69,7 @@
                         ketentuan yang berlaku di perusahaan.</h5>      
 				</div>
 			</div>
-            <div class="container d-flex justify-content-center align-items-center mt-4" style="height: 50vh;">
+            <div class="container d-flex justify-content-center align-items-center mt-4 mb-5" style="height: 50vh;">
                 <div class="card mb-3 mt-5 d-flex align-items-center text-center" style="max-width: 400px; width: 100%;">
                     <div class="card mb-3 mt-4 luar">
                         <img src="{{ asset('umum/images/icon-guidebook.png') }}" class="card-img-top" alt="Berita PLN" 
@@ -91,150 +91,70 @@
 	</div>
  </div>
 </div>
-<!-- Berita -->
-<div class="container-fluid terusberkembang mt-5" id="Buletin">
-    <h1 class="layanan-online" style="text-align: center; color: #0d667a; margin-top: 10px;">Berita</h1>
-    <hr style="border: none; height: 5px; background-color: #fbfb18; width: 20%; margin: auto; box-shadow: 0px 2px 5px rgba(0,0,0,0.2);">
-<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+
+<!-- Berita Terkini -->
+<div class="container-fluid terusberkembang mt-3">
+<h1 class="layanan-online" style="text-align: center; color: #0d667a; margin-top: 10px;" id="Berita">Berita Terkini</h1>
+<hr style="border: none; height: 5px; background-color: #fbfb18; width: 20%; margin: auto; box-shadow: 0px 2px 5px rgba(0,0,0,0.2);">
+@php
+  $chunks = $allBerita->chunk(6);
+@endphp
+
+<div id="carouselExample" class="carousel slide mt-3" data-bs-ride="carousel">
   <div class="carousel-indicators carousel-indicators-2">
-    <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1" style="background-color: #fbfb18;"></button>
-    <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" aria-label="Slide 2" style="background-color: #fbfb18;"></button>
+    @foreach($chunks as $i => $chunk)
+      <button type="button"
+              data-bs-target="#carouselExample"
+              data-bs-slide-to="{{ $i }}"
+              class="{{ $i===0?'active':'' }}"
+              aria-current="{{ $i===0?'true':'false' }}"
+              aria-label="Slide {{ $i+1 }}"
+              style="background-color:#0d667a;"></button>
+    @endforeach
   </div>
-  
+
   <div class="carousel-inner">
-    <!-- Slide 1 -->
-    <div class="carousel-item active">
-      <div class="container mt-4">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="card-terkiniu">
-              <img src="{{ asset('umum/images/berita-1.png') }}" alt="Co-Firing Biomassa" class="img-fluid terkiniu-img">
-              <div class="news-terkiniu">
-                <span class="text-primary">01 Feb 2025</span>
-                <a href="{{ route('berita.index') }}" target="_blank" class="berita-title">
-                PLN Kampanyekan Etika Pencegahan Pelecehan Seksual di Lingkungan Kerja
-				</a>
-                <p class="terkiniu-text">Dalam upaya menciptakan lingkungan kerja yang aman dan bebas dari pelecehan seksual, PT PLN (Persero) mengadakan kampanye bertajuk "Four Ethics Against Sexual Harassment"...</p>
+    @foreach($chunks as $i => $chunk)
+      <div class="carousel-item {{ $i===0?'active':'' }}">
+        <div class="container mt-4">
+          <div class="row">
+            @foreach($chunk as $item)
+              <div class="col-md-6 mb-4">
+                <!-- kartu berita -->
+                <div class="card-terkiniu">
+                  <img src="{{ asset('admin/upload/berita/'.$item->gambar) }}"
+                       alt="{{ $item->judul }}" class="img-fluid terkiniu-img">
+                  <div class="news-terkiniu">
+                    <span class="text-primary">
+                      {{ \Carbon\Carbon::parse($item->tanggal_update)->translatedFormat('d F Y') }}
+                    </span>
+                    <a href="{{ route('berita.detail', $item->id_berita) }}"
+                       class="berita-title" style="font-weight:bold;">
+                      {{ $item->judul }}
+                    </a>
+                    <p class="terkiniu-text">
+                      {{ Str::limit(strip_tags($item->isi),150) }}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card-terkiniu">
-              <img src="{{ asset('umum/images/sppln-2.png') }}" alt="Co-Firing Biomassa" class="img-fluid terkiniu-img">
-              <div class="news-terkiniu">
-                <span class="text-primary">27 Oktober 2023</span>
-                <a href="{{ route('berita.index') }}" target="_blank" class="berita-title">
-                Kebijakan Zero Tolerance Kekerasan dan Pelecehan Seksual di PLN
-				</a>
-                <p class="terkiniu-text">Tepat pada peringatan Hari Listrik Nasional ke-78, 27 Oktober 2023, PT PLN Persero bersama Serikat Pekerja PLN Persero (SP PLN Persero) menandatangani kebijakan bersama komitmen untuk Zero Tolerance Kekerasan dan Pelecehan Seksual di lingkungan kerja PT PLN Persero...</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card-terkiniu">
-              <img src="{{ asset('umum/images/berita-3.jpg') }}" alt="Co-Firing Biomassa" class="img-fluid terkiniu-img">
-              <div class="news-terkiniu">
-                <span class="text-primary">04 Mei 2024</span>
-                <a href="{{ route('berita.index') }}" target="_blank" class="berita-title">
-                Pekerja Perempuan 24 Persen, PLN Klaim Dukung Kesetaraan Gender
-				</a>
-                <p class="terkiniu-text">Manajemen PT PLN (Persero) mengklaim perusahaan menjamin kesempatan yang sama bagi pekerja perempuan dalam berkarir hingga mengambil keputusan. Perusahaan milik negara itu mengungkap sebanyak 24 persen pekerjanya adalah perempuan.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card-terkiniu">
-              <img src="{{ asset('umum/images/berita-4.jpeg') }}" alt="Co-Firing Biomassa" class="img-fluid terkiniu-img">
-              <div class="news-terkiniu">
-                <span class="text-primary">24 September 2022</span>
-                <a href="{{ route('berita.index') }}" target="_blank" class="berita-title">
-                Holding Sub-Holding PLN Beri Ruang Besar Bagi Perempuan, 7 Srikandi Jabat Posisi Penting
-				</a>
-                <p class="terkiniu-text">Jakarta, 24 September 2022 – Transformasi PT PLN (Persero) melalui pembentukan Holding Subholding memberikan ruang bagi perempuan untuk terus berkembang. Hal ini dibuktikan dengan adanya posisi-posisi penting diisi perempuan pada PLN Group...</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card-terkiniu">
-              <img src="{{ asset('umum/images/icon-terusberkembang.jpg') }}" alt="Co-Firing Biomassa" class="img-fluid terkiniu-img">
-              <div class="news-terkiniu">
-                <span class="text-primary">Siaran Pers || 01 Feb 2025</span>
-                <a href="{{ route('berita.index') }}" target="_blank" class="berita-title">
-				    Co-Firing Biomassa di PLTU PLN Hasilkan 1,67 Juta MWh Listrik Hijau Sepanjang 2024
-				</a>
-                <p class="terkiniu-text">Press Release No. 024.PR/STH.01.05/II/2025 Jakarta, 01 Februari 2025 – PT PLN (Persero) sukses mengimplementasikan teknologi substitusi batubara atau co-firing biomassa pada 47 Pembangkit Listrik Tenaga...</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card-terkiniu">
-              <img src="{{ asset('umum/images/icon-terusberkembang.jpg') }}" alt="Co-Firing Biomassa" class="img-fluid terkiniu-img">
-              <div class="news-terkiniu">
-                <span class="text-primary">Siaran Pers || 01 Feb 2025</span>
-                <a href="{{ route('berita.index') }}" target="_blank" class="berita-title">
-				    Co-Firing Biomassa di PLTU PLN Hasilkan 1,67 Juta MWh Listrik Hijau Sepanjang 2024
-				</a>
-                <p class="terkiniu-text">Press Release No. 024.PR/STH.01.05/II/2025 Jakarta, 01 Februari 2025 – PT PLN (Persero) sukses mengimplementasikan teknologi substitusi batubara atau co-firing biomassa pada 47 Pembangkit Listrik Tenaga...</p>
-              </div>
-            </div>
-          </div>
-         </div>
-      </div>
-    </div>
-    <!-- Slide 2 -->
-    <div class="carousel-item">
-      <div class="container mt-4">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="card-terkiniu">
-              <img src="{{ asset('umum/images/icon-terusberkembang.jpg') }}" alt="Co-Firing Biomassa" class="img-fluid terkiniu-img">
-              <div class="news-terkiniu">
-                <span class="text-primary">Siaran Pers || 01 Feb 2025</span>
-                <a href={{ route('berita.index') }} target="_blank" class="berita-title">
-				    Co-Firing Biomassa di PLTU PLN Hasilkan 1,67 Juta MWh Listrik Hijau Sepanjang 2024
-				</a>
-                <p class="terkiniu-text">Press Release No. 024.PR/STH.01.05/II/2025 Jakarta, 01 Februari 2025 – PT PLN (Persero) sukses mengimplementasikan teknologi substitusi batubara atau co-firing biomassa pada 47 Pembangkit Listrik Tenaga...</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card-terkiniu">
-              <img src="{{ asset('umum/images/berita-1.png') }}" alt="Co-Firing Biomassa" class="img-fluid terkiniu-img">
-              <div class="news-terkiniu">
-                <span class="text-primary">Siaran Pers || 01 Feb 2025</span>
-                <a href={{ route('berita.index') }} target="_blank" class="berita-title">
-				    Co-Firing Biomassa di PLTU PLN Hasilkan 1,67 Juta MWh Listrik Hijau Sepanjang 2024
-				</a>
-                <p class="terkiniu-text">Press Release No. 024.PR/STH.01.05/II/2025 Jakarta, 01 Februari 2025 – PT PLN (Persero) sukses mengimplementasikan teknologi substitusi batubara atau co-firing biomassa pada 47 Pembangkit Listrik Tenaga...</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card-terkiniu">
-              <img src="{{ asset('umum/images/icon-terusberkembang.jpg') }}" alt="Co-Firing Biomassa" class="img-fluid terkiniu-img">
-              <div class="news-terkiniu">
-                <span class="text-primary">Siaran Pers || 01 Feb 2025</span>
-                <a href={{ route('berita.index') }} target="_blank" class="berita-title">
-				    Co-Firing Biomassa di PLTU PLN Hasilkan 1,67 Juta MWh Listrik Hijau Sepanjang 2024
-				</a>
-                <p class="terkiniu-text">Press Release No. 024.PR/STH.01.05/II/2025 Jakarta, 01 Februari 2025 – PT PLN (Persero) sukses mengimplementasikan teknologi substitusi batubara atau co-firing biomassa pada 47 Pembangkit Listrik Tenaga...</p>
-              </div>
-            </div>
+            @endforeach
           </div>
         </div>
       </div>
-    </div>
+    @endforeach
   </div>
 
-  <!-- Carousel controls -->
+  {{-- Controls --}}
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="carousel-control-prev-icon bg-dark"></span>
     <span class="visually-hidden">Previous</span>
   </button>
   <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="carousel-control-next-icon bg-dark"></span>
     <span class="visually-hidden">Next</span>
   </button>
 </div>
 </div>
+
 @include('layout.footer')

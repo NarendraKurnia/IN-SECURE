@@ -1,5 +1,5 @@
 <p class="text-right">
-	<a href="{{ asset('user') }}" class="btn btn-outline-info btn-sm">
+	<a href="{{ asset('security/user') }}" class="btn btn-outline-info btn-sm">
 		<i class="fa fa-arrow-left"></i> Kembali
 	</a>
 </p>

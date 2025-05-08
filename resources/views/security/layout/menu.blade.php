@@ -23,7 +23,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ asset('user') }}" class="nav-link">
+            <a href="{{ asset('security/user') }}" class="nav-link">
               <i class="nav-icon fas fa-user-check"></i>
               <p>
                 User
@@ -32,7 +32,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ asset('berita') }}" class="nav-link">
+            <a href="{{ asset('security/berita') }}" class="nav-link">
               <i class="nav-icon fas fa-newspaper"></i>
               <p>
                 Berita

@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\Public\HomeController;
+use App\Http\Controllers\Security\BeritaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Security\UserController;
 
-Route::get('/', function () {
-    return view('index'); 
-})->name('home');
+Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::get('/berita/{id}', [HomeController::class, 'detailBerita'])->name('berita.detail');
 
 // user
 Route::get('security/user', 'App\Http\Controllers\Security\UserController@index');
@@ -14,6 +15,15 @@ Route::post('security/user/proses-tambah', 'App\Http\Controllers\Security\UserCo
 Route::get('security/user/edit/{id}', 'App\Http\Controllers\Security\UserController@edit');
 Route::post('security/user/proses-edit', 'App\Http\Controllers\Security\UserController@proses_edit');
 Route::post('security/user/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
+
+// Berita
+Route::get('security/berita', 'App\Http\Controllers\Security\BeritaController@index')->name('berita.index');
+Route::get('security/berita/tambah', 'App\Http\Controllers\Security\BeritaController@tambah')->name('berita.tambah');
+Route::post('security/berita/proses-tambah', 'App\Http\Controllers\Security\BeritaController@proses_tambah')->name('berita.proses_tambah');
+Route::get('security/berita/edit/{id}', 'App\Http\Controllers\Security\BeritaController@edit')->name('berita.edit');
+Route::post('security/berita/proses-edit', 'App\Http\Controllers\Security\BeritaController@proses_edit')->name('berita.proses_edit');
+Route::post('security/berita/delete/{id}', [BeritaController::class, 'delete'])->name('berita.delete');
+
 
 //halaman security
 Route::get('/security', function () {
