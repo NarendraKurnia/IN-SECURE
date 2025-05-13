@@ -35,7 +35,6 @@
                         <img src="{{ asset('admin/upload/berita/' . $item->gambar) }}" class="card-img-top" alt="{{ $item->judul }}">
                         <div class="card-body p-2">
                             <small class="text-muted">{{ \Carbon\Carbon::parse($item->tanggal_update)->translatedFormat('d F Y') }}</small>
-                            <h5 style="font-size: 1em;">{{ $berita->unit->nama }}</h5>
                             <h6 class="mt-1 mb-1" style="font-weight: bold;">
                                 <a href="{{ route('berita.detail', $item->id_berita) }}">{{ Str::limit($item->judul, 50) }}</a>
                             </h6>
