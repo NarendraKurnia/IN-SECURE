@@ -24,6 +24,7 @@ Route::get('security/berita/edit/{id}', 'App\Http\Controllers\Security\BeritaCon
 Route::post('security/berita/proses-edit', 'App\Http\Controllers\Security\BeritaController@proses_edit')->name('berita.proses_edit');
 Route::post('security/berita/delete/{id}', [BeritaController::class, 'delete'])->name('berita.delete');
 
+Route::get('security/shift-masuk', 'App\Http\Controllers\Security\ShiftmasukController@index')->name('shift-masuk.index');
 
 //halaman security
 Route::get('/security', function () {

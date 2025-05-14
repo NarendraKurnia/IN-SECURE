@@ -26,7 +26,7 @@ class HomeController extends Controller
  
          // Kirim semua data ke view
          return view('index', [
-             'title'     => 'Informasi Publik',
+             'title'     => 'Ruang Kita',
              'berita'    => $berita,
              'allBerita' => $allBerita,
          ]);
