@@ -43,7 +43,7 @@
             <a href="{{ asset('security/shift-masuk') }}" class="nav-link">
               <i class="nav-icon fas fa-book"></i>
               <p>
-                Buletin
+                Shift Masuk
               </p>
             </a>
           </li>

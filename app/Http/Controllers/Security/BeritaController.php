@@ -11,6 +11,7 @@ use App\Models\Unit;
 
 class BeritaController extends Controller
 {
+    // index
     public function index(Request $request)
     {
         $query = Berita_model::with('unit')->orderBy('id_berita', 'DESC');
@@ -34,7 +35,7 @@ class BeritaController extends Controller
 
         return view('security/layout/wrapper', $data);
     }
-
+    // tambah
     public function tambah()
     {
         $units = Unit::select('id_unit', 'nama')->get();
@@ -83,7 +84,7 @@ class BeritaController extends Controller
         $m_berita->tambah($data);
         return redirect('security/berita')->with(['sukses' => 'Data Telah Ditambah']);
     }
-
+    // edit
     public function edit($id_berita)
     {
         $m_berita = new Berita_model();
@@ -100,7 +101,7 @@ class BeritaController extends Controller
 
         return view('security/layout/wrapper', $data);
     }
-
+    // proses edit
     public function proses_edit(Request $request)
     {
         $m_berita = new Berita_model();
@@ -142,7 +143,7 @@ class BeritaController extends Controller
         $m_berita->edit($data);
         return redirect('security/berita')->with(['sukses' => 'Data Telah Diedit']);
     }
-
+    // delete
     public function delete($id)
     {
         $m_berita = new Berita_model();

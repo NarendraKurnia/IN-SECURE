@@ -10,14 +10,14 @@
 
 <div class="row">
     <div class="col-md-6">
-        <form action="{{ url('security/shiftmasuk') }}" method="get">
+        <form action="{{ url('security/shift-masuk') }}" method="get">
         <div class="input-group">
             <input type="text" name="keywords" class="form-control" placeholder="Cari shift..." value="{{ request('keywords') }}">
             <span class="input-group-append">
                 <button type="submit" class="btn btn-info btn-flat">
                     <i class="fa fa-search"></i> Cari
                 </button>
-                <a href="{{ url('security/berita/tambah') }}" class="btn btn-success">
+                <a href="{{ url('security/shift-masuk/tambah') }}" class="btn btn-success">
                     <i class="fa fa-plus"></i> Tambah Baru
                 </a>
             </span>
@@ -37,9 +37,10 @@
     <thead>
         <tr class="text-left bg-light">
             <th width="10%" class="text-center">NO</th>
-            <th width="30%">Tanggal Shift</th>
-            <th width="30%">Update</th>
-            <th width="30%">Action</th>
+            <th width="25%">Tanggal Shift</th>
+            <th width="25%">Waktu Shift</th>
+            <th width="20%">Update</th>
+            <th width="20%">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -47,19 +48,26 @@
         @foreach($shift_masuk as $item)
         <tr>
             <td class="text-center">{{ $no }}</td>
-            <td>{{ $item->tanggal_shift }}</td>
-            <td>{{ $item->tanggal_update ?? '-' }}</td>
+            <td>
+            {{ \Carbon\Carbon::parse($item->tanggal_shift, 'UTC')
+                ->setTimezone('Asia/Jakarta')
+                ->format('d-m-Y ') }}
+            </td>
+
+            <td>{{ $item->shift }}</td>
+            <td>
+            {{ \Carbon\Carbon::parse($item->tanggal_update, 'UTC')
+                ->setTimezone('Asia/Jakarta')
+                ->format('d-m-Y H:i') }}
+            </td>
             <td>
                 <div class="btn-group">
-                    <a href="{{ url('security/berita/edit/'.$item->id_berita) }}" class="btn btn-warning btn-sm">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target={{"#exampleModal" . $item->id_berita}}>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target={{"#exampleModal" . $item->id_masuk}}>
                     <i class="fa fa-trash"></i>
                 </button>
 
                 <!-- Modal -->
-                <div class="modal fade" id={{"exampleModal" . $item->id_berita}} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id={{"exampleModal" . $item->id_masuk}} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                     <div class="modal-header">
@@ -73,7 +81,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <form action="{{ route('berita.delete', $item->id_berita) }}" method="POST">
+                        <form action="{{ route('shift-masuk.delete', $item->id_masuk) }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-danger">Hapus Data</button>
                         </form>

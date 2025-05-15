@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Security\BeritaController;
+use App\Http\Controllers\Security\ShiftmasukController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Security\UserController;
 
@@ -24,7 +25,11 @@ Route::get('security/berita/edit/{id}', 'App\Http\Controllers\Security\BeritaCon
 Route::post('security/berita/proses-edit', 'App\Http\Controllers\Security\BeritaController@proses_edit')->name('berita.proses_edit');
 Route::post('security/berita/delete/{id}', [BeritaController::class, 'delete'])->name('berita.delete');
 
+// Masuk Shift
 Route::get('security/shift-masuk', 'App\Http\Controllers\Security\ShiftmasukController@index')->name('shift-masuk.index');
+Route::get('security/shift-masuk/tambah', 'App\Http\Controllers\Security\ShiftmasukController@tambah')->name('shift-masuk.tambah');
+Route::post('security/shift-masuk/proses-tambah', 'App\Http\Controllers\Security\ShiftmasukController@proses_tambah')->name('shift-masuk.proses_tambah');
+Route::post('security/shift-masuk/delete/{id}', [ShiftmasukController::class, 'delete'])->name('shift-masuk.delete');
 
 //halaman security
 Route::get('/security', function () {

@@ -102,7 +102,7 @@
           </span>
           <div class="container-fluid">
             <div class="row">
-            <div class="col-md-12 ps-0 mb-3">
+              <div class="col-md-12 ps-0 mb-3">
                 <label class="form-label mb-3">Catatan Dari Shift sebelumnya:</label>
                 <input type="text" class="form-control shadow-none" value="Titupan surat untuk manajemen">
               </div>

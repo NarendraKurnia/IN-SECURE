@@ -2,19 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class Shiftmasuk_Model extends Model
 {
-    //use HasFactory;
-
-    protected $table = 'shift_masuk';
-    protected $primaryKey = 'id_masuk';
-
-    const UPDATED_AT = 'tanggal_update';
-    const CREATED_AT = null; 
 
     //listing
     public function listing()
@@ -24,5 +16,27 @@ class Shiftmasuk_Model extends Model
             ->orderBy('id_masuk','DESC')
             ->get();
         return $query;
+    }
+    // tambah 
+    public function tambah ($data)
+    {
+        DB::table('shift_masuk')->insert($data);
+    }
+    // detail
+    public function detail($id_masuk)
+    {
+        $query = DB::table('shift_masuk')
+            ->select('*')
+            ->where('id_masuk', $id_masuk)
+            ->orderBy('id_masuk','DESC')
+            ->first();
+        return $query;
+    }
+    // hapus
+    public function hapus ($data)
+    {
+        DB::table('shift_masuk')
+            ->where('id_masuk',$data['id_masuk'])
+            ->delete();
     }
 }
