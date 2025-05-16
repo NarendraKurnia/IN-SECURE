@@ -29,19 +29,6 @@
   <script src="{{ asset('admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
   <!-- TinyMCE -->
   <script src="{{ asset('admin/tinymce/js/tinymce/tinymce.min.js') }}"></script>
-  <script>
-          tinymce.init({
-          selector: '#editor',  // ID textarea yang akan diubah menjadi TinyMCE
-          toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-          menubar: false,
-          forced_root_block: false, // Ini memastikan TinyMCE tidak menghapus isi textarea
-          setup: function(editor) {
-              editor.on('change', function() {
-                  tinymce.triggerSave(); // Pastikan TinyMCE menyimpan isi textarea
-              });
-          }
-      });
-  </script>
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse">
 <!-- Site wrapper -->

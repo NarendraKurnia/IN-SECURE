@@ -26,7 +26,7 @@
                 <div class="form-group row">
                     <label class="col-md-3 control-label text-right">Isi Berita</label>
                     <div class="col-md-9">
-                        <textarea id="editor" name="isi" class="form-control">{!! old('isi', $berita->isi) !!}</textarea>
+                        <textarea class="editor" name="isi" class="form-control">{!! old('isi', $berita->isi) !!}</textarea>
                     </div>
                 </div>
 

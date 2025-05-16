@@ -26,7 +26,7 @@
 <div class="form-group row">
     <label class="col-md-3">Isi Proyek</label>
     <div class="col-md-9">
-        <textarea id="editor" name="isi" required>{{ old('isi') }}</textarea>
+        <textarea class="editor" name="isi" required>{{ old('isi') }}</textarea>
     </div>
 </div>
 

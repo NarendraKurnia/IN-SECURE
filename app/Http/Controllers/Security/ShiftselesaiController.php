@@ -1,0 +1,131 @@
+<?php
+
+namespace App\Http\Controllers\Security;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use App\Models\Shiftselesai_Model;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
+
+class ShiftselesaiController extends Controller
+{
+    // Index
+    public function index(Request $request)
+    {
+        $m_shift = new Shiftselesai_Model();
+
+        // Ambil semua data (collection)
+        $all = collect($m_shift->listing());
+
+        // Jika ada pencarian keywords, filter collection
+        if ($request->filled('keywords')) {
+            $keywords = strtolower($request->keywords);
+            $all = $all->filter(function($item) use ($keywords) {
+                return str_contains(strtolower($item->tanggal_shift), $keywords)
+                    || str_contains(strtolower($item->nama_security_1), $keywords)
+                    || str_contains(strtolower($item->nama_security_2), $keywords)
+                    || str_contains(strtolower($item->nama_security_3), $keywords);
+            });
+        }
+
+        // Manual paginate collection
+        $perPage = 10;
+        $page    = $request->get('page', 1);
+        $slice   = $all->slice(($page - 1) * $perPage, $perPage)->values();
+        $shift_selesai = new LengthAwarePaginator(
+            $slice,
+            $all->count(),
+            $perPage,
+            $page,
+            ['path' => url('security/shift-selesai'), 'query' => $request->query()]
+        );
+
+        return view('security/layout/wrapper', [
+            'title'       => 'Data Shift Selesai',
+            'shift_selesai' => $shift_selesai,
+            'content'     => 'security/shift-selesai/index'
+        ]);
+    }
+    // Form tambah
+    public function tambah()
+    {
+        return view('security/layout/wrapper', [
+            'title'   => 'Selesai Shift',
+            'content' => 'security/shift-selesai/tambah'
+        ]);
+    }
+
+    // Proses tambah
+    public function proses_tambah(Request $request)
+{
+    $request->validate([
+        'nama_security_1'        => 'required|string|max:100',
+        'jam_selesai_1'        => 'required',
+        'nama_security_2'        => 'required|string|max:100',
+        'jam_selesai_2'        => 'required',
+        'nama_security_3'        => 'nullable|string|max:100',
+        'jam_selesai_3'        => 'nullable',
+        'lampu'                  => 'required|in:Sudah,Belum',
+        'membuka_kunci'          => 'required|in:Sudah,Belum',
+        'mengunci_pintu'         => 'required|in:Sudah,Belum',
+        'uraian_kegiatan'        => 'required|string',
+        'catatan_shift_selanjutnya' => 'required|string',
+        'tanggal_shift'          => 'required|date',
+        'shift'                  => 'required|in:Pagi,Siang,Malam',
+        'foto'                   => 'required|image|mimes:jpeg,png,jpg|max:8024',
+    ]);
+
+    // Upload foto dengan nama unik
+    $nama_file = null;
+    if ($file = $request->file('foto')) {
+        $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $nama_file = \Str::slug($filename, '-') . '-' . time() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('admin/upload/shift-selesai'), $nama_file);
+    }
+
+    $data = [
+        'nama_security_1'        => $request->nama_security_1,
+        'jam_selesai_1'        => $request->jam_selesai_1,
+        'nama_security_2'        => $request->nama_security_2,
+        'jam_selesai_2'        => $request->jam_selesai_2,
+        'nama_security_3'        => $request->nama_security_3,
+        'jam_selesai_3'        => $request->jam_selesai_3,
+        'lampu'                  => $request->lampu,
+        'membuka_kunci'          => $request->membuka_kunci,
+        'mengunci_pintu'         => $request->mengunci_pintu,
+        'uraian_kegiatan'        => $request->uraian_kegiatan,
+        'catatan_shift_selanjutnya' => $request->catatan_shift_selanjutnya,
+        'tanggal_shift'          => $request->tanggal_shift,
+        'shift'                  => $request->shift,
+        'foto'                   => $nama_file,
+        'tanggal_update'         => now(),
+    ];
+
+    $m_shift = new Shiftselesai_Model();
+    $m_shift->tambah($data);
+
+    return redirect('security/shift-selesai')->with('sukses', 'Data shift berhasil ditambahkan');
+}
+    // Delete
+    public function delete($id)
+    {
+        $m_shift = new Shiftselesai_Model();
+
+        // Ambil detail dulu untuk hapus file
+        $detail = $m_shift->detail($id);
+        if ($detail && !empty($detail->foto)) {
+            $path = public_path('admin/upload/shift-selesai/' . $detail->foto);
+            if (file_exists($path)) {
+                @unlink($path);
+            }
+        }
+
+        // Hapus record
+        $m_shift->hapus(['id_selesai' => $id]);
+
+        return redirect('security/shift-selesai')
+            ->with('sukses', 'Data berhasil dihapus');
+    }
+}

@@ -1,5 +1,5 @@
 <p class="text-right">
-	<a href="{{ asset('security/shift-masuk') }}" class="btn btn-outline-info btn-sm">
+	<a href="{{ asset('security/shift-selesai') }}" class="btn btn-outline-info btn-sm">
 		<i class="fa fa-arrow-left"></i> Kembali
 	</a>
 </p>
@@ -14,7 +14,7 @@
     </div>
 @endif
 
-<form action="{{ asset('security/shift-masuk/proses-tambah') }}" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+<form action="{{ asset('security/shift-selesai/proses-tambah') }}" enctype="multipart/form-data" method="post" accept-charset="utf-8">
     {{ csrf_field() }}
 
     <div class="row">
@@ -26,7 +26,7 @@
 
         <div class="col-md-6 p-0 mb-3">
             <label class="form-label p-0 mb-3">Jam Selesai</label>
-            <input type="time" name="jam_selesai_1" class="form-control shadow-none" value="{{ old('jam_selesai_1') }}" required>
+            <input type="time" name="jam_selesai_1" class="form-control shadow-none" value="{{ old('jam_kehadiran_1') }}" required>
         </div>
 
         <div class="col-md-6 ps-0 mb-3">
@@ -36,7 +36,7 @@
 
         <div class="col-md-6 p-0 mb-3">
             <label class="form-label p-0 mb-3">Jam Selesai</label>
-            <input type="time" name="jam_selesai_2" class="form-control shadow-none" value="{{ old('jam_selesai_2') }}" required>
+            <input type="time" name="jam_selesai_2" class="form-control shadow-none" value="{{ old('jam_kehadiran_2') }}" required>
         </div>
 
         <div class="col-md-6 ps-0 mb-3">
@@ -46,9 +46,46 @@
 
         <div class="col-md-6 p-0 mb-3">
             <label class="form-label p-0 mb-3">Jam Selesai (Optional)</label>
-            <input type="time" name="jam_selesai_3" class="form-control shadow-none" value="{{ old('jam_selesai_3') }}">
+            <input type="time" name="jam_selesai_3" class="form-control shadow-none" value="{{ old('jam_kehadiran_3') }}">
         </div>
 
+        <div class="col-md-6 p-0 mb-3">
+            <label class="form-label p-0 mb-3">Mematikan Lampu</label>
+            <select name="lampu" class="form-control" required>
+				<option value="" disabled selected>Keterangan</option>
+                            <option value="Sudah">Sudah</option>
+                            <option value="Belum">Belum</option>
+            </select>
+        </div>
+
+        <div class="col-md-6 ps-0 mb-3">
+            <label class="form-label p-0 mb-3">Membuka kunci</label>
+            <select name="membuka_kunci" class="form-control" required>
+				<option value="" disabled selected>Keterangan</option>
+                            <option value="Sudah">Sudah</option>
+                            <option value="Belum">Belum</option>
+            </select>
+        </div>
+
+        <div class="col-md-6 ps-0 mb-3">
+            <label class="form-label p-0 mb-3">Mengunci Pintu</label>
+            <select name="mengunci_pintu" class="form-control" required>
+				<option value="" disabled selected>Keterangan</option>
+                            <option value="Sudah">Sudah</option>
+                            <option value="Belum">Belum</option>
+            </select>
+        </div>
+
+        <div class="col-md-12 p-0 mb-3">
+            <label class="form-label p-0 mb-3">Uraian Kegiatan</label>
+            <textarea class="editor" name="uraian_kegiatan" required>{{ old('uraian_kegiatan') }}</textarea>
+        </div>
+
+        <div class="col-md-12 p-0 mb-3">
+            <label class="form-label p-0 mb-3">Catatan Shift Selanjutnya</label>
+            <textarea class="editor" name="catatan_shift_selanjutnya" required>{{ old('catatan_shift_selanjutnya') }}</textarea>
+        </div>
+ 
         <div class="col-md-6 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Tanggal Shift</label>
             <input type="date" name="tanggal_shift" class="form-control shadow-none" value="{{ old('tanggal_shift') }}" required>

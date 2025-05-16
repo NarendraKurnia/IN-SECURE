@@ -23,7 +23,7 @@ class ShiftmasukController extends Controller
         if ($request->filled('keywords')) {
             $keywords = strtolower($request->keywords);
             $all = $all->filter(function($item) use ($keywords) {
-                return str_contains(strtolower($item->tanggal_update), $keywords)
+                return str_contains(strtolower($item->tanggal_shift), $keywords)
                     || str_contains(strtolower($item->nama_security_1), $keywords)
                     || str_contains(strtolower($item->nama_security_2), $keywords)
                     || str_contains(strtolower($item->nama_security_3), $keywords);
