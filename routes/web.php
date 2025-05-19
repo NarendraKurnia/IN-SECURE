@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Security\BeritaController;
+use App\Http\Controllers\Security\DashboardController;
 use App\Http\Controllers\Security\ShiftmasukController;
 use App\Http\Controllers\Security\ShiftselesaiController;
 use Illuminate\Support\Facades\Route;
@@ -9,6 +10,10 @@ use App\Http\Controllers\Security\UserController;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/berita/{id}', [HomeController::class, 'detailBerita'])->name('berita.detail');
+
+// Dashboard
+Route::get('security/dashboard', [DashboardController::class, 'index']);
+Route::get('api/security/dashboard', [DashboardController::class, 'apiData']);
 
 // user
 Route::get('security/user', 'App\Http\Controllers\Security\UserController@index');

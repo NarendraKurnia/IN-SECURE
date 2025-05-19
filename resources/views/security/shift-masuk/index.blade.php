@@ -85,7 +85,10 @@
                             <div class="row">
                             <div class="col-md-12 ps-0 mb-3">
                                 <label class="form-label mb-3">Catatan Dari Shift sebelumnya:</label>
-                                <input type="text" class="form-control shadow-none" value="{{ $item->catatan_shift_sebelumnya ?? 'Titupan surat untuk manajemen' }}" readonly>
+                               <div class="border p-3 rounded bg-light" style="min-height: 80px;">
+    {!! $item->catatan_shift_sebelumnya ?? '<em>Tidak ada catatan shift sebelumnya</em>' !!}
+</div>
+
                             </div>
 
                             <div class="col-md-6 ps-0 mb-3">

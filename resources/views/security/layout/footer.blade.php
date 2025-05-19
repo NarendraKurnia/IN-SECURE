@@ -12,6 +12,9 @@
     </section>
     <!-- /.content -->
   </div>
+<!-- script js  -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <!-- /.content-wrapper -->
   <script>
 @if ($message = Session::get('sukses'))
@@ -190,6 +193,52 @@ $awal = $sek-100;
    })
 
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const shiftMasuk = document.getElementById('shiftMasuk');
+  if (!shiftMasuk) return; // hanya jalan di halaman dashboard
+
+  fetch("{{ url('security/dashboard/api-data') }}")
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('shiftMasuk').textContent = data.total_shift_masuk;
+      document.getElementById('shiftSelesai').textContent = data.total_shift_selesai;
+      document.getElementById('catatan').textContent = data.catatan_terakhir ?? '-';
+
+      const labels = data.grafik.map(item => item.tanggal);
+      const jumlah = data.grafik.map(item => item.jumlah);
+
+      const ctx = document.getElementById('grafikShift').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Jumlah Shift Masuk',
+            data: jumlah,
+            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              precision: 0
+            }
+          }
+        }
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching dashboard data:', error);
+      document.getElementById('catatan').textContent = 'Gagal memuat data.';
+    });
+});
+</script>
+
 
 <!-- Bootstrap 4 -->
 <script src="{{ asset('admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

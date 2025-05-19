@@ -25,8 +25,8 @@
         </div>
 
         <div class="col-md-6 p-0 mb-3">
-            <label class="form-label p-0 mb-3">Jam Selesai</label>
-            <input type="time" name="jam_selesai_1" class="form-control shadow-none" value="{{ old('jam_selesai_1') }}" required>
+            <label class="form-label p-0 mb-3">Jam Kehadiran</label>
+            <input type="time" name="jam_kehadiran_1" class="form-control shadow-none" value="{{ old('jam_kehadiran_1') }}" required>
         </div>
 
         <div class="col-md-6 ps-0 mb-3">
@@ -35,8 +35,8 @@
         </div>
 
         <div class="col-md-6 p-0 mb-3">
-            <label class="form-label p-0 mb-3">Jam Selesai</label>
-            <input type="time" name="jam_selesai_2" class="form-control shadow-none" value="{{ old('jam_selesai_2') }}" required>
+            <label class="form-label p-0 mb-3">Jam Kehadiran</label>
+            <input type="time" name="jam_kehadiran_2" class="form-control shadow-none" value="{{ old('jam_kehadiran_2') }}" required>
         </div>
 
         <div class="col-md-6 ps-0 mb-3">
@@ -45,14 +45,19 @@
         </div>
 
         <div class="col-md-6 p-0 mb-3">
-            <label class="form-label p-0 mb-3">Jam Selesai (Optional)</label>
-            <input type="time" name="jam_selesai_3" class="form-control shadow-none" value="{{ old('jam_selesai_3') }}">
+            <label class="form-label p-0 mb-3">Jam Kehadiran (Optional)</label>
+            <input type="time" name="jam_kehadiran_3" class="form-control shadow-none" value="{{ old('jam_kehadiran_3') }}">
         </div>
 
         <div class="col-md-6 ps-0 mb-3">
-            <label class="form-label p-0 mb-3">Tanggal Shift</label>
-            <input type="date" name="tanggal_shift" class="form-control shadow-none" value="{{ old('tanggal_shift') }}" required>
-        </div>
+    <label class="form-label p-0 mb-3">Tanggal Shift</label>
+    @php
+        $today = \Carbon\Carbon::now()->format('d-m-Y');
+    @endphp
+    {{-- Jangan pakai name agar tidak dikirim --}}
+    <input type="text" class="form-control" value="{{ $today }}" disabled>
+</div>
+
 
 		<div class="col-md-6 p-0 mb-3">
             <label class="form-label p-0 mb-3">Waktu Shift</label>

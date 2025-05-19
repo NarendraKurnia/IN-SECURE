@@ -88,7 +88,10 @@
  
         <div class="col-md-6 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Tanggal Shift</label>
-            <input type="date" name="tanggal_shift" class="form-control shadow-none" value="{{ old('tanggal_shift') }}" required>
+            @php
+                $today = \Carbon\Carbon::now()->format('d-m-Y');
+            @endphp
+            <input type="text" name="tanggal_shift" class="form-control" value="{{ $today }}" disabled required>
         </div>
 
 		<div class="col-md-6 p-0 mb-3">

@@ -83,10 +83,6 @@
 
                         <div class="modal-body">
                             <div class="row">
-                            <div class="col-md-12 ps-0 mb-3">
-                                <label class="form-label mb-3">Catatan Dari Shift sebelumnya:</label>
-                                <input type="text" class="form-control shadow-none" value="{{ $item->catatan_shift_sebelumnya ?? 'Titupan surat untuk manajemen' }}" readonly>
-                            </div>
 
                             <div class="col-md-6 ps-0 mb-3">
                                 <label class="form-label mb-3">Nama Security 1</label>
@@ -116,13 +112,42 @@
                             </div>
 
                             <div class="col-md-6 ps-0 mb-3">
+                                <label class="form-label p-0 mb-3">Lampu</label>
+                                <input type="text" name="lampu" class="form-control shadow-none" value="{{ $item->lampu}}" readonly>
+                            </div>
+
+                            <div class="col-md-6 p-0 mb-3">
+                                <label class="form-label p-0 mb-3">Membuka Kunci</label>
+                                <input type="text" name="membuka_kunci" class="form-control shadow-none" value="{{ $item->membuka_kunci}}" readonly>
+                            </div>
+
+                            <div class="col-md-6 ps-0 mb-3">
+                                <label class="form-label p-0 mb-3">Mengunci Pintu</label>
+                                <input type="text" name="mengunci_pintu" class="form-control shadow-none" value="{{ $item->mengunci_pintu}}" readonly>
+                            </div>
+
+                            <div class="col-md-6 p-0 mb-3">
                                 <label class="form-label p-0 mb-3">Tanggal Shift</label>
                                 <input type="date" name="tanggal_shift" class="form-control shadow-none" value="{{ $item->tanggal_shift }}" readonly>
                             </div>
 
-                            <div class="col-md-6 p-0 mb-3">
+                            <div class="col-md-6 ps-0 mb-3">
                                 <label class="form-label p-0 mb-3">Waktu Shift</label>
                                 <input type="text" name="shift" class="form-control shadow-none" value="{{ $item->shift}}" readonly>
+                            </div>
+
+                            <div class="col-md-12 p-0 mb-3">
+                                <label class="form-label p-0 mb-3">Uraian Kegiatan</label>
+                                <div class="border p-3 rounded bg-light" style="min-height: 100px;">
+                                    {!! $item->uraian_kegiatan !!}
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 p-0 mb-3">
+                                <label class="form-label p-0 mb-3">Catatan Shift Selanjutnya</label>
+                                <div class="border p-3 rounded bg-light" style="min-height: 100px;">
+                                    {!! $item->catatan_shift_selanjutnya !!}
+                                </div>
                             </div>
 
                             <div class="col-md-12 p-0 mb-3">
