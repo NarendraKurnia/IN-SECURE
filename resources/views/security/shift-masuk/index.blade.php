@@ -64,11 +64,19 @@
                 <div class="btn-group">
                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target={{"#exampleModal1" . $item->id_masuk}}>
                     <i class="fa fa-eye"></i>
-                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target={{"#exampleModal1" . $item->id_masuk}}>
-                    <i class="fa fa-print"></i>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target={{"#exampleModal2" . $item->id_masuk}}>
-                    <i class="fa fa-trash"></i>
+                    @php
+                        $unit_id = session('unit_id');
+                    @endphp
+
+                    @if ($unit_id != 1)
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="{{ '#exampleModal2' . $item->id_masuk }}"> 
+                        <i class="fa fa-trash"></i>
+                    </button>
+                    @endif
                 </button>
+                <a href="{{ route('shiftmasuk.cetak', $item->id_masuk) }}" target="_blank" class="btn btn-success btn-sm">
+                    <i class="fa fa-print"></i>
+                </a>
 
                 <!-- Modal Detail Shift -->
                     <div class="modal fade" id="{{ 'exampleModal1' . $item->id_masuk }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $item->id_masuk }}" aria-hidden="true">

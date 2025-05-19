@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Security;
 
 use App\Http\Controllers\Controller;
+use App\Models\User_model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -14,7 +15,11 @@ class BeritaController extends Controller
     // index
     public function index(Request $request)
     {
+        $query = User_model::with('unit')->orderBy('id_user', 'DESC');
         $query = Berita_model::with('unit')->orderBy('id_berita', 'DESC');
+
+        $unit_id = session()->get('unit_id');
+        $unit = Unit::where('id_unit', $unit_id)->first();
 
         if ($request->has('keywords')) {
             $keywords = $request->keywords;
@@ -29,7 +34,7 @@ class BeritaController extends Controller
         $data = [ 
             'title'   => 'Data Berita',
             'berita'  => $berita,
-            'unit'    => null, // tidak perlu lagi ambil unit berdasarkan session
+            'unit'    => $unit,
             'content' => 'security/berita/index'
         ];
 

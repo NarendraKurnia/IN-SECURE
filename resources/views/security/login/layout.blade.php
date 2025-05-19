@@ -1,40 +1,204 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Security</title>
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('umum/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ $title }}</title>
 
-    <!-- Icon & Fonts -->
-    <link rel="icon" href="{{ asset('umum/images/Logo_PLN.png') }}">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.0/uicons-thin-straight/css/uicons-thin-straight.css'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@master/devicon.min.css">
-
-    <!-- Custom JS -->
-    <script src="{{ asset('script.js') }}" defer></script>
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{{ asset('admin/plugins/fontawesome-free/css/all.min.css') }}">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{{ asset('admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="{{ asset('admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{ asset('admin/dist/css/adminlte.min.css') }}">
+  <!-- jQuery -->
+  <script src="{{ asset('admin/plugins/jquery/jquery.min.js') }} "></script>
+  <!-- SweetAlert2 -->
+  <script src="{{ asset('admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 </head>
-<body style="
-    background-image: url('umum/images/login-bg.png');
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
-    margin: 0; 
-    height: auto; 
-">
+<style>
+   body.login-page {
+    background: url('{{ asset('umum/images/foto-up3sbb.jpeg') }}') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  .login-box {
+    width: 100%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .login-logo a {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 28px;
+    text-shadow: 1px 1px 3px #000;
+    text-align: center;
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .card {
+    background: transparent;
+    border: none;
+  }
+
+  .login-card-body {
+    background: transparent;
+    padding: 10px 20px;
+    border-radius: 10px;
+  }
+
+  .login-box-msg {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .form-control {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  .input-group-text {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ccc;
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+  }
+
+  .btn-primary {
+    background: linear-gradient(90deg, #7b2ff7, #f107a3);
+    border: none;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border-radius: 8px;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
+
+  .alert {
+    background: rgba(255, 0, 0, 0.1);
+    color: #fff;
+    border-radius: 8px;
+  }
+
+  .text-center a {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+
+  .text-center a:hover {
+    text-decoration: none;
+  }
+
+  label {
+    color: #fff;
+  }
+
+  .icheck-primary input[type="checkbox"] {
+    accent-color: #7b2ff7;
+  }
+</style>
+<body class="hold-transition login-page">
+
+@include($content)
+
+<script>
+tinymce.init({
+  selector: '.simple',
+  menubar: false,
+  plugins: [
+    'advlist autolink lists link image charmap print preview anchor',
+    'searchreplace visualblocks code fullscreen',
+    'insertdatetime media table paste code help wordcount'
+  ],
+  toolbar: 'undo redo | formatselect | ' +
+  'bold italic backcolor | alignleft aligncenter ' +
+  'alignright alignjustify | bullist numlist outdent indent | ' +
+  'removeformat | help',
+  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+});
+</script>
+
+<?php 
+$sek  = date('Y');
+$awal = $sek-100;
+?>
+<script>
+  // notifikasi jika sukses
+<?php if(Session::get('sukses')) { ?>
+  Swal.fire({
+    title: 'Berhasil!',
+    text: "{{ Session::get('sukses') }}",
+    icon: 'success',
+    confirmButtonText: 'Ok, Terimakasih'
+});
+<?php } ?> 
+// notifikasi jika gagal
+<?php if(Session::get('warning')) { ?>
+  Swal.fire({
+    title: 'Oopsss..!',
+    text: "{{ Session::get('warning') }}",
+    icon: 'warning',
+    confirmButtonText: 'Coba Lagi'
+});
+<?php } ?> 
+
+  // Popup Delete
+  $(document).ready(function() {
+    // Event handler untuk link dengan class 'delete-link'
+    $('.delete-link').on('click', function(e) {
+      e.preventDefault(); //mencegah aksi default link
+
+      var href = $(this).attr('href'); //Mendapatkan URL dari href link
+
+      // Menampilkan konfirmasi dengan SweetAlert2
+      Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        text: "Data yang dihapus tidak dapat dikembalikan!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor:  '#d33',
+        confirmButtonText:  'Ya, hapus!',
+        cancelButtonText: 'Batal'
+      }).then((reslut) => {
+        if    (result.isConfirmed) {
+          // Jika pengguna menkonfirmasi, lanjutkan ke URL penghapusan
+          window.location.href;
+        }    
+      })
+    })
+   })
+
+</script>
+
+<!-- Bootstrap 4 -->
+<script src="{{ asset('admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- AdminLTE App -->
+<script src="{{ asset('admin/dist/js/adminlte.min.js') }}"></script>
 </body>
 </html>

@@ -69,7 +69,7 @@ class UserController extends Controller
                     ];
         $m_user->tambah($data);
         // end proses
-        return redirect('user')->with(['sukses' => 'Data Telah Ditambah']);
+        return redirect('security/user')->with(['sukses' => 'Data Telah Ditambah']);
     }
     // edit
     public function edit($id_user)
@@ -131,7 +131,7 @@ class UserController extends Controller
          $data = ['id_user' => $id];
          $m_user->hapus($data);   
           
-         return redirect('user')->with(['sukses' => 'Data Telah Dihapus']);
+         return redirect('security/user')->with(['sukses' => 'Data Telah Dihapus']);
     }
 
 }

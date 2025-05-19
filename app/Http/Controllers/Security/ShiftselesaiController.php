@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Models\Shiftselesai_Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use App\Models\Unit;
 use Carbon\Carbon;
 
 class ShiftselesaiController extends Controller
@@ -15,6 +16,9 @@ class ShiftselesaiController extends Controller
     // Index
     public function index(Request $request)
     {
+        $unit_id = session()->get('unit_id');
+        $unit = Unit::where('id_unit', $unit_id)->first();
+
         $m_shift = new Shiftselesai_Model();
 
         // Ambil semua data (collection)
@@ -44,9 +48,10 @@ class ShiftselesaiController extends Controller
         );
 
         return view('security/layout/wrapper', [
-            'title'       => 'Data Shift Selesai',
+            'title'         => 'Data Shift Selesai',
+            'unit'          => $unit,
             'shift_selesai' => $shift_selesai,
-            'content'     => 'security/shift-selesai/index'
+            'content'       => 'security/shift-selesai/index'
         ]);
     }
     // Form tambah
@@ -137,4 +142,46 @@ class ShiftselesaiController extends Controller
         return redirect('security/shift-selesai')
             ->with('sukses', 'Data berhasil dihapus');
     }
+    public function cetak($id)
+    {
+        $unit_id = session()->get('unit_id');
+        $unit = Unit::where('id_unit', $unit_id)->first();
+
+        // Ambil data shift selesai berdasarkan ID
+        $m_shift_selesai = new Shiftselesai_Model();
+        $shift = $m_shift_selesai->detail($id);
+
+        if (!$shift) {
+            abort(404, 'Data shift tidak ditemukan');
+        }
+
+        // Ambil semua data shift selesai
+        $selesai_all = collect($m_shift_selesai->listing());
+
+        // Urutan shift
+        $shift_order = ['Pagi' => 1, 'Siang' => 2, 'Malam' => 3];
+
+        // Proses catatan shift sebelumnya
+        $current_order = $shift_order[$shift->shift] ?? null;
+
+        if ($current_order && $current_order > 1) {
+            // Shift sebelumnya di hari yang sama
+            $prev_shift = array_search($current_order - 1, $shift_order);
+            $prev_shift_item = $selesai_all->first(function ($s) use ($shift, $prev_shift) {
+                return $s->tanggal_shift === $shift->tanggal_shift && $s->shift === $prev_shift;
+            });
+        } else {
+            // Shift malam sebelumnya (hari sebelumnya)
+            $prev_date = date('Y-m-d', strtotime($shift->tanggal_shift . ' -1 day'));
+            $prev_shift_item = $selesai_all->first(function ($s) use ($prev_date) {
+                return $s->tanggal_shift === $prev_date && $s->shift === 'Malam';
+            });
+        }
+
+        $shift->catatan_shift_sebelumnya = $prev_shift_item->catatan_shift_selanjutnya ?? null;
+
+        // Kirim ke view cetak
+        return view('security.shift-selesai.cetak', compact('shift', 'unit'));
+    }
+
 }

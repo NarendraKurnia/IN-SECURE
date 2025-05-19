@@ -8,8 +8,6 @@
     </div>
 @endif
 
-<form action="{{ asset('security/user/proses') }}" method="post" accept-charset="utf-8">
-{{ csrf_field() }}
 <div class="row">
 
 
@@ -70,12 +68,13 @@
                     Data Yang di Hapus Tidak Dapat Dikembalikan!!!
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <form action="{{ route('user.delete', $user->id_user) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-danger">Hapus Data</button>
-                        </form>
-                    </div>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <form action="{{ route('user.delete', $user->id_user) }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-danger">Hapus Data</button>
+    </form>
+</div>
+
                     </div>
                 </div>
             </div>

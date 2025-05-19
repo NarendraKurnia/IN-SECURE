@@ -5,11 +5,19 @@ use App\Http\Controllers\Security\BeritaController;
 use App\Http\Controllers\Security\DashboardController;
 use App\Http\Controllers\Security\ShiftmasukController;
 use App\Http\Controllers\Security\ShiftselesaiController;
+use App\Http\Controllers\Security\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Security\UserController;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/berita/{id}', [HomeController::class, 'detailBerita'])->name('berita.detail');
+
+//halaman login
+Route::get('security/login', 'App\Http\Controllers\Security\LoginController@index')->name('security.login');
+Route::get('security/lupa-password', 'App\Http\Controllers\Security\LoginController@lupa_password')->name('security.lupa_password');
+Route::post('security/cek-login', 'App\Http\Controllers\Security\LoginController@cek_login')->name('security.cek_login');
+Route::get('security/logout', 'App\Http\Controllers\Security\LoginController@logout')->name('security.logout');
+
 
 // Dashboard
 Route::get('security/dashboard', [DashboardController::class, 'index']);
@@ -36,12 +44,15 @@ Route::get('security/shift-masuk', 'App\Http\Controllers\Security\ShiftmasukCont
 Route::get('security/shift-masuk/tambah', 'App\Http\Controllers\Security\ShiftmasukController@tambah')->name('shift-masuk.tambah');
 Route::post('security/shift-masuk/proses-tambah', 'App\Http\Controllers\Security\ShiftmasukController@proses_tambah')->name('shift-masuk.proses_tambah');
 Route::post('security/shift-masuk/delete/{id}', [ShiftmasukController::class, 'delete'])->name('shift-masuk.delete');
+Route::get('/shift-masuk/cetak/{id}', [ShiftmasukController::class, 'cetak'])->name('shiftmasuk.cetak');
+
 
 // Selesai Shift
 Route::get('security/shift-selesai', 'App\Http\Controllers\Security\ShiftselesaiController@index')->name('shift-selesai.index');
 Route::get('security/shift-selesai/tambah', 'App\Http\Controllers\Security\ShiftselesaiController@tambah')->name('shift-selesai.tambah');
 Route::post('security/shift-selesai/proses-tambah', 'App\Http\Controllers\Security\ShiftselesaiController@proses_tambah')->name('shift-selesai.proses_tambah');
 Route::post('security/shift-selesai/delete/{id}', [ShiftselesaiController::class, 'delete'])->name('shift-selesai.delete');
+Route::get('security/shift-selesai/cetak/{id}', [ShiftselesaiController::class, 'cetak'])->name('shift-selesai.cetak');
 
 //halaman security
 Route::get('/security', function () {

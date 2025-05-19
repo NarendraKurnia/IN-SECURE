@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Security;
 
 use App\Http\Controllers\Controller;
+use App\Models\User_model;
 use Illuminate\Http\Request;
 use App\Models\Shiftmasuk_Model;
 use App\Models\Shiftselesai_Model;
 use Carbon\Carbon;
+use App\Models\Unit;
 use Illuminate\Support\Facades\Response;
 
 class DashboardController extends Controller
@@ -42,8 +44,14 @@ class DashboardController extends Controller
     // View dashboard
     public function index()
     {
-        return view('security/layout/wrapper', [
+         $query = User_model::with('unit')->orderBy('id_user', 'DESC');
+        
+         $unit_id = session()->get('unit_id');
+         $unit = Unit::where('id_unit', $unit_id)->first();
+
+         return view('security/layout/wrapper', [
             'title' => 'Dashboard Admin',
+            'unit'    => $unit,
             'content' => 'security/dashboard/index'
         ]);
     }

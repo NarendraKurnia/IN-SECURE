@@ -12,7 +12,7 @@
 					<a class="nav-link active" href="{{ route('home') }}">Ruang Kita</a>
 				</li>
 					<li class="navbar-item">
-                        <a class="nav-link" href="{{ route('security.index') }}">Secure</a>
+                        <a class="nav-link" href="{{ route('security.login') }}">Secure</a>
                     </li>
 					<li class="navbar-item">
 						<a class="nav-link" href="https://mail.google.com/mail/?view=cm&to=narendrakurnia18@gmail.com" target="_blank">Kontak</a>
