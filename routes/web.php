@@ -3,6 +3,7 @@
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Security\BeritaController;
 use App\Http\Controllers\Security\DashboardController;
+use App\Http\Controllers\Security\PemeriksaanAparController;
 use App\Http\Controllers\Security\ShiftmasukController;
 use App\Http\Controllers\Security\ShiftselesaiController;
 use App\Http\Controllers\Security\LoginController;
@@ -21,7 +22,6 @@ Route::get('security/logout', 'App\Http\Controllers\Security\LoginController@log
 
 // Dashboard
 Route::get('security/dashboard', [DashboardController::class, 'index']);
-Route::get('api/security/dashboard', [DashboardController::class, 'apiData']);
 
 // user
 Route::get('security/user', 'App\Http\Controllers\Security\UserController@index');
@@ -53,6 +53,14 @@ Route::get('security/shift-selesai/tambah', 'App\Http\Controllers\Security\Shift
 Route::post('security/shift-selesai/proses-tambah', 'App\Http\Controllers\Security\ShiftselesaiController@proses_tambah')->name('shift-selesai.proses_tambah');
 Route::post('security/shift-selesai/delete/{id}', [ShiftselesaiController::class, 'delete'])->name('shift-selesai.delete');
 Route::get('security/shift-selesai/cetak/{id}', [ShiftselesaiController::class, 'cetak'])->name('shift-selesai.cetak');
+
+// Pemeriksaan APAR
+Route::prefix('security/apar')->name('pemeriksaan-apar.')->group(function () {
+    Route::get('/', [PemeriksaanAparController::class, 'index'])->name('index');
+    Route::get('tambah', [PemeriksaanAparController::class, 'tambah'])->name('tambah');
+    Route::post('proses-tambah', [PemeriksaanAparController::class, 'proses_tambah'])->name('proses-tambah');
+    Route::post('delete/{id}', [PemeriksaanAparController::class, 'hapus'])->name('delete');
+});
 
 //halaman security
 Route::get('/security', function () {

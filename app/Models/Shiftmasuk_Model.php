@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\DB;
 
 class Shiftmasuk_Model extends Model
 {
+    protected $table = 'shift_masuk'; 
 
+    public $timestamps = false;
+    
     //listing
     public function listing()
     {

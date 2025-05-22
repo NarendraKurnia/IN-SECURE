@@ -55,6 +55,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ asset('security/apar') }}" class="nav-link">
+              <i class="nav-icon fa fa-fire"></i>
+              <p>
+                Pemeriksaan Apar
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

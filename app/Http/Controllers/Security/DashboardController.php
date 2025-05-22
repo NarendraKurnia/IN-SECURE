@@ -3,56 +3,65 @@
 namespace App\Http\Controllers\Security;
 
 use App\Http\Controllers\Controller;
-use App\Models\User_model;
-use Illuminate\Http\Request;
 use App\Models\Shiftmasuk_Model;
 use App\Models\Shiftselesai_Model;
-use Carbon\Carbon;
+use App\Models\User_model;
 use App\Models\Unit;
-use Illuminate\Support\Facades\Response;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-    // Endpoint API
-    public function apiData()
+   public function index()
 {
     $today = Carbon::today()->toDateString();
 
     $total_shift_masuk = Shiftmasuk_Model::whereDate('tanggal_shift', $today)->count();
     $total_shift_selesai = Shiftselesai_Model::whereDate('tanggal_shift', $today)->count();
 
-    $data_masuk = Shiftmasuk_Model::selectRaw('tanggal_shift as tanggal, count(*) as jumlah')
-        ->where('tanggal_shift', '>=', Carbon::now()->subDays(6)->toDateString())
-        ->groupBy('tanggal_shift')
-        ->orderBy('tanggal_shift')
-        ->get();
+    // Ambil catatan shift selesai terbaru dari hari ini (prioritas shift pagi/siang)
+    $catatan_terakhir = Shiftselesai_Model::whereDate('tanggal_shift', $today)
+    ->orderBy('tanggal_shift', 'desc') // ganti dari updated_at
+    ->value('catatan_shift_selanjutnya');
 
+// Jika tidak ada shift selesai hari ini, ambil shift malam terakhir (hari sebelumnya)
+if (!$catatan_terakhir) {
     $catatan_terakhir = Shiftselesai_Model::where('shift', 'Malam')
+        ->whereDate('tanggal_shift', '<', $today)
         ->orderBy('tanggal_shift', 'desc')
         ->value('catatan_shift_selanjutnya');
-
-    return response()->json([
-        'today' => $today,
-        'total_shift_masuk' => $total_shift_masuk,
-        'total_shift_selesai' => $total_shift_selesai,
-        'grafik' => $data_masuk,
-        'catatan_terakhir' => $catatan_terakhir,
-    ]);
 }
 
+    // Petugas shift hari ini
+    $petugas_shift = Shiftmasuk_Model::whereDate('tanggal_shift', $today)
+        ->select('nama_security_1', 'nama_security_2', 'nama_security_3', 'shift', 'tanggal_shift')
+        ->get();
 
-    // View dashboard
-    public function index()
-    {
-         $query = User_model::with('unit')->orderBy('id_user', 'DESC');
-        
-         $unit_id = session()->get('unit_id');
-         $unit = Unit::where('id_unit', $unit_id)->first();
+    // Unit aktif
+    $unit_id = session()->get('unit_id');
+    $unit = Unit::where('id_unit', $unit_id)->first();
 
-         return view('security/layout/wrapper', [
-            'title' => 'Dashboard Admin',
-            'unit'    => $unit,
-            'content' => 'security/dashboard/index'
-        ]);
-    }
+    // Rekap security 30 hari terakhir
+    $startDate = Carbon::today()->subDays(30);
+    $rekap_security = Shiftmasuk_Model::where('tanggal_shift', '>=', $startDate)
+        ->get()
+        ->flatMap(function ($shift) {
+            return collect([$shift->nama_security_1, $shift->nama_security_2, $shift->nama_security_3])
+                ->filter()
+                ->map(function ($nama) {
+                    return trim($nama);
+                });
+        })
+        ->countBy();
+
+    return view('security/layout/wrapper', [
+        'title' => 'Dashboard Admin',
+        'unit' => $unit,
+        'content' => 'security/dashboard/index',
+        'total_shift_masuk' => $total_shift_masuk,
+        'total_shift_selesai' => $total_shift_selesai,
+        'catatan_terakhir' => $catatan_terakhir,
+        'petugas_shift' => $petugas_shift,
+        'rekap_security' => $rekap_security,
+    ]);
+}
 }

@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\DB;
 
 class Shiftselesai_Model extends Model
 {
+     protected $table = 'shift_selesai';
+    public $timestamps = false;
+    
     //listing
     public function listing()
     {
