@@ -12,61 +12,65 @@ use App\Models\Unit;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class PemeriksaanAparController extends Controller
 {
+    // Index
     public function index(Request $request)
-{
-    $unit_id = session()->get('unit_id');
-    $unit = Unit::where('id_unit', $unit_id)->first();
+    {
+        $unit_id = session()->get('unit_id');
+        $unit = Unit::where('id_unit', $unit_id)->first();
 
-    $m = new PemeriksaanApar_Model();
-    $all = collect($m->listing());
+        $m = new PemeriksaanApar_Model();
+        $all = collect($m->listing());
+        $m = new PemeriksaanApar_Model();
+        $all = collect($m->with('details')->get());
 
-    if ($request->filled('keywords')) {
-        $keywords = strtolower($request->keywords);
-        $all = $all->filter(function ($item) use ($keywords) {
-            return str_contains(strtolower($item->nama_petugas), $keywords)
-                || str_contains(strtolower($item->tanggal_update), $keywords);
-        });
+
+        if ($request->filled('keywords')) {
+            $keywords = strtolower($request->keywords);
+            $all = $all->filter(function ($item) use ($keywords) {
+                return str_contains(strtolower($item->nama_petugas), $keywords)
+                    || str_contains(strtolower($item->tanggal_update), $keywords);
+            });
+        }
+
+        $perPage = 10;
+        $page = $request->get('page', 1);
+        $slice = $all->slice(($page - 1) * $perPage)->values();
+        $data = new LengthAwarePaginator(
+            $slice,
+            $all->count(),
+            $perPage,
+            $page,
+            ['path' => url('security/pemeriksaan-apar'), 'query' => $request->query()]
+        );
+
+        return view('security/layout/wrapper', [
+            'title'       => 'Pemeriksaan APAR',
+            'unit'        => $unit,
+            'pemeriksaan' => $data,       // <-- di sini yang penting
+            'content'     => 'security/apar/index'
+        ]);
     }
 
-    $perPage = 10;
-    $page = $request->get('page', 1);
-    $slice = $all->slice(($page - 1) * $perPage)->values();
-    $data = new LengthAwarePaginator(
-        $slice,
-        $all->count(),
-        $perPage,
-        $page,
-        ['path' => url('security/pemeriksaan-apar'), 'query' => $request->query()]
-    );
-
-    return view('security/layout/wrapper', [
-        'title'       => 'Pemeriksaan APAR',
-        'unit'        => $unit,
-        'pemeriksaan' => $data,       // <-- di sini yang penting
-        'content'     => 'security/apar/index'
-    ]);
-}
-
-
+    // Tambah
     public function tambah()
-{
-    $apars = (new Apar_Model())->listing();
-
-    return view('security/layout/wrapper', [
-        'title'   => 'Tambah Pemeriksaan APAR',
-        'apars'   => $apars,
-        'content' => 'security/apar/tambah'
-    ]);
-}
-
-
-    public function proses_tambah(Request $r)
     {
-        $r->validate([
+        $apars = (new Apar_Model())->listing();
+
+        return view('security/layout/wrapper', [
+            'title'   => 'Tambah Pemeriksaan APAR',
+            'apars'   => $apars,
+            'content' => 'security/apar/tambah'
+        ]);
+    }
+
+    // Proses tambah
+    public function proses_tambah(Request $request)
+    {
+        $request->validate([
             'nama_petugas'     => 'required|string',
             'jam_pemeriksaan'  => 'required',
             'tanggal_update'   => 'required|date',
@@ -78,32 +82,40 @@ class PemeriksaanAparController extends Controller
             'klem_selang.*'    => 'required|in:bagus,rusak',
             'handle.*'         => 'required|in:bagus,rusak',
             'kondisi_fisik.*'  => 'required|in:bagus,rusak',
+            'foto'            => 'required|image|mimes:jpeg,png,jpg|max:8024'
         ]);
 
-        DB::transaction(function() use($r) {
-            // Gabungkan tanggal dan jam
-$tanggal_update = $r->tanggal_update . ' ' . $r->jam_pemeriksaan;
+        DB::transaction(function() use($request) {
+        $tanggal_update = $request->tanggal_update . ' ' . $request->jam_pemeriksaan;
 
-$master = PemeriksaanApar_Model::create([
-    'nama_petugas'         => $r->nama_petugas,
-    'jam_pemeriksaan'      => $r->jam_pemeriksaan,
-    'tanggal_update'       => $tanggal_update,
-    'tanggal_pemeriksaan'  => $r->tanggal_update,
-    'link_reset'           => $r->link_reset ?? null,
-]);
+        $master = PemeriksaanApar_Model::create([
+            'nama_petugas'         => $request->nama_petugas,
+            'jam_pemeriksaan'      => $request->jam_pemeriksaan,
+            'tanggal_update'       => $tanggal_update,
+            'tanggal_pemeriksaan'  => $request->tanggal_update,
+            'link_reset'           => $request->link_reset ?? null,
+        ]);
 
+        // Upload foto hanya sekali
+        $nama_file = null;
+        if ($file = $request->file('foto')) {
+            $filename  = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $nama_file = Str::slug($filename, '-') . '-' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('admin/upload/apar'), $nama_file);
+        }
 
-            foreach($r->id_apar as $i => $id_apar){
-                PemeriksaanAparDetail_Model::create([
-                    'id_pemeriksaan' => $master->id_pemeriksaan,
-                    'id_apar'        => $id_apar,
-                    'masa_berlaku'   => $r->masa_berlaku[$i],
-                    'presure_gauge'  => $r->presure_gauge[$i],
-                    'pin_segel'      => $r->pin_segel[$i],
-                    'selang'         => $r->selang[$i],
-                    'klem_selang'    => $r->klem_selang[$i],
-                    'handle'         => $r->handle[$i],
-                    'kondisi_fisik'  => $r->kondisi_fisik[$i],
+        foreach($request->id_apar as $i => $id_apar){
+            PemeriksaanAparDetail_Model::create([
+                'id_pemeriksaan' => $master->id_pemeriksaan,
+                'id_apar'        => $id_apar,
+                'masa_berlaku'   => $request->masa_berlaku[$i],
+                'presure_gauge'  => $request->presure_gauge[$i],
+                'pin_segel'      => $request->pin_segel[$i],
+                'selang'         => $request->selang[$i],
+                'klem_selang'    => $request->klem_selang[$i],
+                'handle'         => $request->handle[$i],
+                'kondisi_fisik'  => $request->kondisi_fisik[$i],
+                'foto' => $nama_file ?? null, // gunakan 1 foto untuk semua detail
                 ]);
             }
         });
@@ -112,6 +124,8 @@ $master = PemeriksaanApar_Model::create([
             ->with('sukses','Data pemeriksaan berhasil disimpan');
     }
 
+
+    // Detail
     public function detail($id)
     {
         $master = PemeriksaanApar_Model::find($id);
@@ -125,7 +139,7 @@ $master = PemeriksaanApar_Model::create([
             'content' => 'security/apar/detail'
         ]);
     }
-
+    // Hapus
     public function hapus($id)
     {
         DB::transaction(function() use($id){
@@ -140,5 +154,21 @@ $master = PemeriksaanApar_Model::create([
 
         return redirect('security/apar')
             ->with('sukses','Data pemeriksaan berhasil dihapus');
+    }
+    // Cetak
+    public function cetak($id)
+    {
+        $unit_id = session()->get('unit_id');
+        $unit = Unit::where('id_unit', $unit_id)->first();
+
+        // Ambil data pemeriksaan berdasarkan ID, sekaligus relasi detail
+        $pemeriksaan = PemeriksaanApar_Model::with('details')->find($id);
+
+        if (!$pemeriksaan) {
+            abort(404, 'Data pemeriksaan tidak ditemukan');
+        }
+
+        // Kirim ke view cetak
+        return view('security.apar.cetak', compact('pemeriksaan', 'unit'));
     }
 }

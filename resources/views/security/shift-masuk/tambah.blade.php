@@ -24,7 +24,7 @@
             <input type="text" name="nama_security_1" class="form-control shadow-none" value="{{ old('nama_security_1') }}" required>
         </div>
 
-        <div class="col-md-6 p-0 mb-3">
+        <div class="col-md-6 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Jam Kehadiran</label>
             <input type="time" name="jam_kehadiran_1" class="form-control shadow-none" value="{{ old('jam_kehadiran_1') }}" required>
         </div>
@@ -34,7 +34,7 @@
             <input type="text" name="nama_security_2" class="form-control shadow-none" value="{{ old('nama_security_2') }}" required>
         </div>
 
-        <div class="col-md-6 p-0 mb-3">
+        <div class="col-md-6 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Jam Kehadiran</label>
             <input type="time" name="jam_kehadiran_2" class="form-control shadow-none" value="{{ old('jam_kehadiran_2') }}" required>
         </div>
@@ -44,7 +44,7 @@
             <input type="text" name="nama_security_3" class="form-control shadow-none" value="{{ old('nama_security_3') }}">
         </div>
 
-        <div class="col-md-6 p-0 mb-3">
+        <div class="col-md-6 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Jam Kehadiran (Optional)</label>
             <input type="time" name="jam_kehadiran_3" class="form-control shadow-none" value="{{ old('jam_kehadiran_3') }}">
         </div>
@@ -59,7 +59,7 @@
 </div>
 
 
-		<div class="col-md-6 p-0 mb-3">
+		<div class="col-md-6 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Waktu Shift</label>
             <select name="shift" class="form-control" required>
 				<option value="" disabled selected>Pilih Waktu Shift</option>

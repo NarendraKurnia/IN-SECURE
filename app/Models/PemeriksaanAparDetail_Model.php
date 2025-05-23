@@ -11,7 +11,7 @@ class PemeriksaanAparDetail_Model extends Model
     protected $fillable = [
       'id_pemeriksaan','id_apar','masa_berlaku',
       'presure_gauge','pin_segel','selang',
-      'klem_selang','handle','kondisi_fisik'
+      'klem_selang','handle','kondisi_fisik', 'foto'
     ];
 
     public function listingByPemeriksaan($id)

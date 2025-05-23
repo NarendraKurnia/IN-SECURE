@@ -14,7 +14,7 @@
   </div>
 @endif
 
-<form action="{{ url('security/apar/proses-tambah') }}" method="POST" accept-charset="utf-8">
+<form action="{{ url('security/apar/proses-tambah') }}" enctype="multipart/form-data" method="post" accept-charset="utf-8">
   @csrf
 
   <div class="row">
@@ -24,7 +24,7 @@
       <input type="text" name="nama_petugas" class="form-control shadow-none" value="{{ old('nama_petugas') }}" required>
     </div>
 
-    <div class="col-md-6 p-0 mb-3">
+    <div class="col-md-6 ps-0 mb-3">
       <label class="form-label p-0 mb-3">Jam Pemeriksaan</label>
       <input type="time" name="jam_pemeriksaan" class="form-control shadow-none" value="{{ old('jam_pemeriksaan') }}" required>
     </div>
@@ -34,7 +34,7 @@
       <input type="date" name="tanggal_update" class="form-control shadow-none" value="{{ old('tanggal_update') }}" required>
     </div>
 
-    <div class="col-md-6 p-0 mb-3">
+    <div class="col-md-6 ps-0 mb-3">
       <label class="form-label mb-3">Nomor APAR</label>
       <select class="form-control shadow-none custom-select-icon" required name="id_apar[]">
         <option value="" disabled selected>Pilih NO APAR</option>
@@ -50,6 +50,11 @@
       <label class="form-label">Masa Berlaku</label>
       <input type="date" name="masa_berlaku[]" class="form-control shadow-none" value="{{ old('masa_berlaku.0') }}" required>
     </div>
+
+   <div class="col-md-6 ps-0 mb-3">
+    <label class="form-label">Foto</label>
+    <input type="file" name="foto" class="form-control" required>
+</div>
 
     <div class="col-md-12 mt-4">
       <label class="form-label" style="font-weight: bold;">List Check</label>

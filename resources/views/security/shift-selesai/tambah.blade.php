@@ -24,7 +24,7 @@
             <input type="text" name="nama_security_1" class="form-control shadow-none" value="{{ old('nama_security_1') }}" required>
         </div>
 
-        <div class="col-md-6 p-0 mb-3">
+        <div class="col-md-6 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Jam Selesai</label>
             <input type="time" name="jam_selesai_1" class="form-control shadow-none" value="{{ old('jam_kehadiran_1') }}" required>
         </div>
@@ -34,7 +34,7 @@
             <input type="text" name="nama_security_2" class="form-control shadow-none" value="{{ old('nama_security_2') }}" required>
         </div>
 
-        <div class="col-md-6 p-0 mb-3">
+        <div class="col-md-6 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Jam Selesai</label>
             <input type="time" name="jam_selesai_2" class="form-control shadow-none" value="{{ old('jam_kehadiran_2') }}" required>
         </div>
@@ -44,12 +44,12 @@
             <input type="text" name="nama_security_3" class="form-control shadow-none" value="{{ old('nama_security_3') }}">
         </div>
 
-        <div class="col-md-6 p-0 mb-3">
+        <div class="col-md-6 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Jam Selesai (Optional)</label>
             <input type="time" name="jam_selesai_3" class="form-control shadow-none" value="{{ old('jam_kehadiran_3') }}">
         </div>
 
-        <div class="col-md-6 p-0 mb-3">
+        <div class="col-md-6 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Mematikan Lampu</label>
             <select name="lampu" class="form-control" required>
 				<option value="" disabled selected>Keterangan</option>
@@ -76,12 +76,12 @@
             </select>
         </div>
 
-        <div class="col-md-12 p-0 mb-3">
+        <div class="col-md-12 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Uraian Kegiatan</label>
             <textarea class="editor" name="uraian_kegiatan" required>{{ old('uraian_kegiatan') }}</textarea>
         </div>
 
-        <div class="col-md-12 p-0 mb-3">
+        <div class="col-md-12 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Catatan Shift Selanjutnya</label>
             <textarea class="editor" name="catatan_shift_selanjutnya" required>{{ old('catatan_shift_selanjutnya') }}</textarea>
         </div>
@@ -94,7 +94,7 @@
             <input type="text" name="tanggal_shift" class="form-control" value="{{ $today }}" disabled required>
         </div>
 
-		<div class="col-md-6 p-0 mb-3">
+		<div class="col-md-6 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Waktu Shift</label>
             <select name="shift" class="form-control" required>
 				<option value="" disabled selected>Pilih Waktu Shift</option>
@@ -104,7 +104,7 @@
             </select>
         </div>
 
-        <div class="col-md-12 p-0 mb-3">
+        <div class="col-md-12 ps-0 mb-3">
             <label class="form-label">Foto</label>
             <input type="file" name="foto" class="form-control shadow-none" required>
         </div>

@@ -27,4 +27,10 @@ public function detail_apar()
     return $this->hasMany(\App\Models\PemeriksaanAparDetail_Model::class, 'id_pemeriksaan');
 }
 
+public function details()
+{
+    return $this->hasMany(PemeriksaanAparDetail_Model::class, 'id_pemeriksaan');
+}
+
+
 }

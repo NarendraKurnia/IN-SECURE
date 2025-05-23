@@ -49,12 +49,12 @@
                 <tr>
                     <td class="text-center">{{ $no }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->tanggal_pemeriksaan)->format('d-m-Y') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($item->tanggal_update)->format('d-m-Y H:i:s') }}</td>
                     <td>
                         @foreach ($item->detail_apar as $detail)
                             {{ $detail->apar->kode }} ({{ $detail->apar->lokasi }})<br>
                         @endforeach
                     </td>
+                    <td>{{ \Carbon\Carbon::parse($item->tanggal_update)->format('d-m-Y H:i:s') }}</td>
                     <td>
                         <div class="btn-group">
                             <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#detailModal{{ $item->id_pemeriksaan }}">
@@ -64,59 +64,104 @@
                             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal{{ $item->id_pemeriksaan }}">
                                 <i class="fa fa-trash"></i>
                             </button>
+                            <a href="{{ route('apar.cetak', $item->id_pemeriksaan) }}" target="_blank" class="btn btn-success btn-sm">
+                            <i class="fa fa-print"></i>
+                        </a>
                         </div>
-
+                
                         <!-- Modal Detail -->
-        <div class="modal fade" id="detailModal{{ $item->id_pemeriksaan }}" tabindex="-1" aria-labelledby="detailLabel{{ $item->id_pemeriksaan }}" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Detail Pemeriksaan </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+       <!-- Modal Detail -->
+<div class="modal fade" id="detailModal{{ $item->id_pemeriksaan }}" tabindex="-1" aria-labelledby="detailLabel{{ $item->id_pemeriksaan }}" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Pemeriksaan APAR #{{ $item->id_pemeriksaan }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
             <div class="modal-body">
-                <div class="mb-3">
-                    <strong>Nama Petugas:</strong> {{ $item->nama_petugas }}<br>
-                    <strong>Jam Pemeriksaan:</strong> {{ $item->jam_pemeriksaan }}<br>
-                    <strong>Tanggal Pemeriksaan:</strong> {{ \Carbon\Carbon::parse($item->tanggal_update)->format('d-m-Y') }}<br>
-                </div>
+                <div class="row">
+                    <div class="col-md-6 ps-0 mb-3">
+                        <label class="form-label mb-3">Nama Petugas</label>
+                        <input type="text" class="form-control shadow-none" value="{{ $item->nama_petugas }}" readonly>
+                    </div>
 
-                <h6 class="mt-4">Detail APAR</h6>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>NO</th>
-                            <th>Nomor APAR</th>
-                            <th>Lokasi</th>
-                            <th>Masa Berlaku</th>
-                            <th>Presure Gauge</th>
-                            <th>Pin / Segel</th>
-                            <th>Selang</th>
-                            <th>Klem Selang</th>
-                            <th>Handle</th>
-                            <th>Kondisi Fisik</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($item->detail_apar as $i => $detail)
+                    <div class="col-md-6 ps-0 mb-3">
+                        <label class="form-label mb-3">Jam Pemeriksaan</label>
+                        <input type="time" class="form-control shadow-none" value="{{ $item->jam_pemeriksaan }}" readonly>
+                    </div>
+
+                    <div class="col-md-6 ps-0 mb-3">
+                        <label class="form-label mb-3">Tanggal Pemeriksaan</label>
+                        <input type="date" class="form-control shadow-none" value="{{ $item->tanggal_update }}" readonly>
+                    </div>
+                    <div class="col-md-6 ps-0 mb-3">
+                            <label class="form-label">Nomor APAR</label>
+                            @php
+                            $apar = \App\Models\Apar_Model::find($detail->id_apar);
+                        @endphp
+                        <input type="text" class="form-control shadow-none" value="{{ $apar->kode }} ({{ $apar->lokasi }})" readonly>
+                    </div>
+                    <div class="col-md-6 ps-0 mb-3">
+                            <label class="form-label">Masa Berlaku</label>
+                            <input type="date" class="form-control shadow-none" value="{{ $detail->masa_berlaku }}" readonly>
+                    </div>
+                </div>
+                <div class="col-md-12 p-0 mb-3">
+                                <label class="form-label">Foto</label>
+                                @foreach($pemeriksaan as $item)
+    @if($item->details->isNotEmpty() && $item->details->first()->foto)
+        <img src="{{ asset('admin/upload/apar/' . $item->details->first()->foto) }}" alt="Foto" class="img-fluid mb-3" style="max-height: 200px;"/>
+    @else
+        <p>Tidak ada foto.</p>
+    @endif
+@endforeach
+
+
+
+                            </div>
+                @php
+                    $detailItems = (new \App\Models\PemeriksaanAparDetail_Model())->listingByPemeriksaan($item->id_pemeriksaan);
+                    $checkItems = [
+                        'presure_gauge' => 'Presure Gauge',
+                        'pin_segel'     => 'Pin / Segel',
+                        'selang'        => 'Selang',
+                        'klem_selang'   => 'Klem Selang',
+                        'handle'        => 'Handle',
+                        'kondisi_fisik' => 'Kondisi Fisik'
+                    ];
+                @endphp
+
+                @foreach($detailItems as $detail)
+                <div class="border rounded p-3 mb-3">
+
+                    <label class="form-label fw-bold">List Check</label>
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>{{ $i + 1 }}</td>
-                                <td>{{ $detail->apar->kode ?? '-' }}</td>
-                                <td>{{ $detail->apar->lokasi ?? '-' }}</td>
-                                <td>{{ \Carbon\Carbon::parse($detail->masa_berlaku)->format('d-m-Y') }}</td>
-                                <td>{{ ucfirst($detail->presure_gauge) }}</td>
-                                <td>{{ ucfirst($detail->pin_segel) }}</td>
-                                <td>{{ ucfirst($detail->selang) }}</td>
-                                <td>{{ ucfirst($detail->klem_selang) }}</td>
-                                <td>{{ ucfirst($detail->handle) }}</td>
-                                <td>{{ ucfirst($detail->kondisi_fisik) }}</td>
+                                <th style="width: 50%;">Item Check</th>
+                                <th style="width: 25%; text-align: center;">Bagus</th>
+                                <th style="width: 25%; text-align: center;">Rusak</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach($checkItems as $field => $label)
+                            <tr>
+                                <td>{{ $label }}</td>
+                                <td class="text-center">
+                                    <input type="radio" disabled {{ $detail->$field === 'bagus' ? 'checked' : '' }}>
+                                </td>
+                                <td class="text-center">
+                                    <input type="radio" disabled {{ $detail->$field === 'rusak' ? 'checked' : '' }}>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                @endforeach
             </div>
 
             <div class="modal-footer">
@@ -125,6 +170,7 @@
         </div>
     </div>
 </div>
+
 
 
                         <!-- Modal Hapus -->

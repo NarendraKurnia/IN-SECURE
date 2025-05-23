@@ -61,6 +61,7 @@ Route::prefix('security/apar')->name('pemeriksaan-apar.')->group(function () {
     Route::post('proses-tambah', [PemeriksaanAparController::class, 'proses_tambah'])->name('proses-tambah');
     Route::post('delete/{id}', [PemeriksaanAparController::class, 'hapus'])->name('delete');
 });
+Route::get('security/pemeriksaan-apar/cetak/{id}', [PemeriksaanAparController::class, 'cetak'])->name('apar.cetak');
 
 //halaman security
 Route::get('/security', function () {
