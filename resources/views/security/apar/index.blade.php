@@ -70,7 +70,7 @@
                         </div>
                 
                         <!-- Modal Detail -->
-       <!-- Modal Detail -->
+       
 <div class="modal fade" id="detailModal{{ $item->id_pemeriksaan }}" tabindex="-1" aria-labelledby="detailLabel{{ $item->id_pemeriksaan }}" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -95,7 +95,7 @@
 
                     <div class="col-md-6 ps-0 mb-3">
                         <label class="form-label mb-3">Tanggal Pemeriksaan</label>
-                        <input type="date" class="form-control shadow-none" value="{{ $item->tanggal_update }}" readonly>
+                        <input type="date" class="form-control shadow-none" value="{{ $item->tanggal_pemeriksaan }}" readonly>
                     </div>
                     <div class="col-md-6 ps-0 mb-3">
                             <label class="form-label">Nomor APAR</label>
@@ -112,16 +112,13 @@
                 <div class="col-md-12 p-0 mb-3">
                                 <label class="form-label">Foto</label>
                                 @foreach($pemeriksaan as $item)
-    @if($item->details->isNotEmpty() && $item->details->first()->foto)
-        <img src="{{ asset('admin/upload/apar/' . $item->details->first()->foto) }}" alt="Foto" class="img-fluid mb-3" style="max-height: 200px;"/>
-    @else
-        <p>Tidak ada foto.</p>
-    @endif
-@endforeach
-
-
-
-                            </div>
+                                @if($item->details->isNotEmpty() && $item->details->first()->foto)
+                                    <img src="{{ asset('admin/upload/apar/' . $item->details->first()->foto) }}" alt="Foto" class="img-fluid mb-3" style="max-height: 200px;"/>
+                                @else
+                                    <p>Tidak ada foto.</p>
+                                @endif
+                            @endforeach
+                </div>
                 @php
                     $detailItems = (new \App\Models\PemeriksaanAparDetail_Model())->listingByPemeriksaan($item->id_pemeriksaan);
                     $checkItems = [

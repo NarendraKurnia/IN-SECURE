@@ -31,7 +31,7 @@
 
     <div class="col-md-6 ps-0 mb-3">
       <label class="form-label p-0 mb-3">Tanggal Pemeriksaan</label>
-      <input type="date" name="tanggal_update" class="form-control shadow-none" value="{{ old('tanggal_update') }}" required>
+      <input type="date" name="tanggal_pemeriksaan" class="form-control shadow-none" value="{{ old('tanggal_pemeriksaan') }}" required>
     </div>
 
     <div class="col-md-6 ps-0 mb-3">

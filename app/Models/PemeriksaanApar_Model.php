@@ -10,7 +10,7 @@ class PemeriksaanApar_Model extends Model
     protected $primaryKey = 'id_pemeriksaan';
     public $timestamps = false;
     protected $fillable = [
-      'nama_petugas','jam_pemeriksaan','tanggal_update','link_reset'
+      'nama_petugas','jam_pemeriksaan','tanggal_pemeriksaan','link_reset'
     ];
 
     // app/Models/PemeriksaanApar_Model.php
@@ -18,7 +18,7 @@ class PemeriksaanApar_Model extends Model
 public function listing()
 {
     return self::with(['detail_apar.apar'])
-        ->orderBy('tanggal_update', 'desc')
+        ->orderBy('tanggal_pemeriksaan', 'desc')
         ->get();
 }
 

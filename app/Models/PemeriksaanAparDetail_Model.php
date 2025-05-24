@@ -10,7 +10,7 @@ class PemeriksaanAparDetail_Model extends Model
     public $timestamps = false;
     protected $fillable = [
       'id_pemeriksaan','id_apar','masa_berlaku',
-      'presure_gauge','pin_segel','selang',
+      'presure_gauge','pin_segel','selang', 'tanggal_pemeriksaan',
       'klem_selang','handle','kondisi_fisik', 'foto'
     ];
 

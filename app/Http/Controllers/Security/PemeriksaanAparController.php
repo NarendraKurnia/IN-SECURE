@@ -71,54 +71,57 @@ class PemeriksaanAparController extends Controller
     public function proses_tambah(Request $request)
     {
         $request->validate([
-            'nama_petugas'     => 'required|string',
-            'jam_pemeriksaan'  => 'required',
-            'tanggal_update'   => 'required|date',
-            'id_apar.*'        => 'required|integer',
-            'masa_berlaku.*'   => 'required|date',
-            'presure_gauge.*'  => 'required|in:bagus,rusak',
-            'pin_segel.*'      => 'required|in:bagus,rusak',
-            'selang.*'         => 'required|in:bagus,rusak',
-            'klem_selang.*'    => 'required|in:bagus,rusak',
-            'handle.*'         => 'required|in:bagus,rusak',
-            'kondisi_fisik.*'  => 'required|in:bagus,rusak',
-            'foto'            => 'required|image|mimes:jpeg,png,jpg|max:8024'
+    'nama_petugas'          => 'required|string',
+    'jam_pemeriksaan'       => 'required',
+    'tanggal_pemeriksaan'   => 'required|date',          // tanggal pemeriksaan wajib dan satu nilai
+    'id_apar.*'             => 'required|integer',
+    'masa_berlaku.*'        => 'required|date',
+    'presure_gauge.*'       => 'required|in:bagus,rusak',
+    'pin_segel.*'           => 'required|in:bagus,rusak',
+    'selang.*'              => 'required|in:bagus,rusak',
+    'klem_selang.*'         => 'required|in:bagus,rusak',
+    'handle.*'              => 'required|in:bagus,rusak',
+    'kondisi_fisik.*'       => 'required|in:bagus,rusak',
+    'foto'                  => 'required|image|mimes:jpeg,png,jpg|max:8024',
+]);
+
+DB::transaction(function() use($request) {
+    // Buat tanggal_update otomatis dengan tanggal_pemeriksaan + jam_pemeriksaan + detik
+    $tanggal_update = $request->tanggal_pemeriksaan . ' ' . $request->jam_pemeriksaan . ':00';
+
+    $master = PemeriksaanApar_Model::create([
+        'nama_petugas'        => $request->nama_petugas,
+        'jam_pemeriksaan'     => $request->jam_pemeriksaan,
+        'tanggal_pemeriksaan' => $request->tanggal_pemeriksaan, // wajib input user
+        'tanggal_update'      => $tanggal_update,               // otomatis
+        'link_reset'          => $request->link_reset ?? null,
+    ]);
+
+    // upload foto sekali
+    $nama_file = null;
+    if ($file = $request->file('foto')) {
+        $filename  = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $nama_file = Str::slug($filename, '-') . '-' . time() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('admin/upload/apar'), $nama_file);
+    }
+
+    // Insert detail
+    foreach($request->id_apar as $i => $id_apar){
+        PemeriksaanAparDetail_Model::create([
+            'id_pemeriksaan' => $master->id_pemeriksaan,
+            'id_apar'        => $id_apar,
+            'masa_berlaku'   => $request->masa_berlaku[$i],
+            'presure_gauge'  => $request->presure_gauge[$i],
+            'pin_segel'      => $request->pin_segel[$i],
+            'selang'         => $request->selang[$i],
+            'klem_selang'    => $request->klem_selang[$i],
+            'handle'         => $request->handle[$i],
+            'kondisi_fisik'  => $request->kondisi_fisik[$i],
+            'foto'           => $nama_file ?? null,
         ]);
+    }
+});
 
-        DB::transaction(function() use($request) {
-        $tanggal_update = $request->tanggal_update . ' ' . $request->jam_pemeriksaan;
-
-        $master = PemeriksaanApar_Model::create([
-            'nama_petugas'         => $request->nama_petugas,
-            'jam_pemeriksaan'      => $request->jam_pemeriksaan,
-            'tanggal_update'       => $tanggal_update,
-            'tanggal_pemeriksaan'  => $request->tanggal_update,
-            'link_reset'           => $request->link_reset ?? null,
-        ]);
-
-        // Upload foto hanya sekali
-        $nama_file = null;
-        if ($file = $request->file('foto')) {
-            $filename  = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $nama_file = Str::slug($filename, '-') . '-' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('admin/upload/apar'), $nama_file);
-        }
-
-        foreach($request->id_apar as $i => $id_apar){
-            PemeriksaanAparDetail_Model::create([
-                'id_pemeriksaan' => $master->id_pemeriksaan,
-                'id_apar'        => $id_apar,
-                'masa_berlaku'   => $request->masa_berlaku[$i],
-                'presure_gauge'  => $request->presure_gauge[$i],
-                'pin_segel'      => $request->pin_segel[$i],
-                'selang'         => $request->selang[$i],
-                'klem_selang'    => $request->klem_selang[$i],
-                'handle'         => $request->handle[$i],
-                'kondisi_fisik'  => $request->kondisi_fisik[$i],
-                'foto' => $nama_file ?? null, // gunakan 1 foto untuk semua detail
-                ]);
-            }
-        });
 
         return redirect('security/apar')
             ->with('sukses','Data pemeriksaan berhasil disimpan');
