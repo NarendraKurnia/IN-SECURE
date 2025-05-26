@@ -64,4 +64,19 @@ if (!$catatan_terakhir) {
         'rekap_security' => $rekap_security,
     ]);
 }
+public function cetak($nama_security)
+{
+    // Ambil shift masuk dan selesai untuk nama ini dalam 30 hari terakhir
+    $tanggal_batas = Carbon::now()->subDays(30)->toDateString();
+
+    $shiftMasuk = Shiftmasuk_Model::where('nama_security_1', $nama_security)
+        ->whereDate('tanggal_shift', '>=', $tanggal_batas)
+        ->get();
+
+    $shiftSelesai = Shiftselesai_Model::where('nama_security_1', $nama_security)
+        ->whereDate('tanggal_shift', '>=', $tanggal_batas)
+        ->get();
+
+    return view('security.dashboard.security_cetak', compact('nama_security', 'shiftMasuk', 'shiftSelesai'));
+}
 }

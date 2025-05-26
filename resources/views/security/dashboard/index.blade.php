@@ -59,22 +59,32 @@
 
     {{-- Rekap Shift Security --}}
     <div class="card shadow-sm mb-4">
-        <div class="card-header bg-info text-white">
-            <h5 class="mb-0"><i class="bi bi-clipboard-data-fill"></i> Rekap Shift Security (30 Hari Terakhir)</h5>
-        </div>
-        <div class="card-body">
-            @if ($rekap_security->count())
-                <ul class="list-group">
-                    @foreach ($rekap_security as $nama => $jumlah_shift)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            {{ $nama }}
-                            <span class="badge bg-primary rounded-pill">{{ $jumlah_shift }} shift</span>
-                        </li>
-                    @endforeach
-                </ul>
-            @else
-                <p class="text-muted">Tidak ada data shift bulan ini.</p>
-            @endif
-        </div>
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0"><i class="bi bi-clipboard-data-fill"></i> Rekap Shift Security (30 Hari Terakhir)</h5>
     </div>
+    <div class="card-body">
+        @if ($rekap_security->count())
+            <ul class="list-group">
+                @foreach ($rekap_security as $nama => $jumlah_shift)
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="flex-grow-1">{{ $nama }}</div>
+                            <div class="text-center" style="width: 100px;">
+                                <span class="badge bg-primary rounded-pill">{{ $jumlah_shift }} shift</span>
+                            </div>
+                            <div class="ms-2">
+                                <a href="{{ route('dashboard.cetak', $nama) }}" target="_blank" class="btn btn-success btn-sm">
+                                    <i class="fa fa-print"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        @else
+            <p class="text-muted">Tidak ada data shift bulan ini.</p>
+        @endif
+    </div>
+</div>
+
 </div>

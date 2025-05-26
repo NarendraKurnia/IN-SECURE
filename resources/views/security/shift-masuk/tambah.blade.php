@@ -19,35 +19,42 @@
 
     <div class="row">
 
-        <div class="col-md-6 ps-0 mb-3">
-            <label class="form-label mb-3">Nama Security 1</label>
-            <input type="text" name="nama_security_1" class="form-control shadow-none" value="{{ old('nama_security_1') }}" required>
-        </div>
+        @php
+    $currentTime = now()->format('H:i');
+@endphp
 
-        <div class="col-md-6 ps-0 mb-3">
-            <label class="form-label p-0 mb-3">Jam Kehadiran</label>
-            <input type="time" name="jam_kehadiran_1" class="form-control shadow-none" value="{{ old('jam_kehadiran_1') }}" required>
-        </div>
+<div class="col-md-6 ps-0 mb-3">
+    <label class="form-label mb-3">Nama Security 1</label>
+    <input type="text" name="nama_security_1" class="form-control shadow-none" value="{{ old('nama_security_1') }}" required>
+</div>
 
-        <div class="col-md-6 ps-0 mb-3">
-            <label class="form-label p-0 mb-3">Nama Security 2</label>
-            <input type="text" name="nama_security_2" class="form-control shadow-none" value="{{ old('nama_security_2') }}" required>
-        </div>
+<div class="col-md-6 ps-0 mb-3">
+    <label class="form-label p-0 mb-3">Jam Kehadiran</label>
+    <input type="time" name="jam_kehadiran_1" class="form-control shadow-none" value="{{ $currentTime }}" disabled>
+</div>
 
-        <div class="col-md-6 ps-0 mb-3">
-            <label class="form-label p-0 mb-3">Jam Kehadiran</label>
-            <input type="time" name="jam_kehadiran_2" class="form-control shadow-none" value="{{ old('jam_kehadiran_2') }}" required>
-        </div>
+<div class="col-md-6 ps-0 mb-3">
+    <label class="form-label p-0 mb-3">Nama Security 2</label>
+    <input type="text" name="nama_security_2" class="form-control shadow-none" value="{{ old('nama_security_2') }}" required>
+</div>
 
-        <div class="col-md-6 ps-0 mb-3">
-            <label class="form-label mb-3">Nama Security 3 (Optional)</label>
-            <input type="text" name="nama_security_3" class="form-control shadow-none" value="{{ old('nama_security_3') }}">
-        </div>
+<div class="col-md-6 ps-0 mb-3">
+    <label class="form-label p-0 mb-3">Jam Kehadiran</label>
+    <input type="time" name="jam_kehadiran_2" class="form-control shadow-none" value="{{ $currentTime }}" disabled>
+</div>
 
-        <div class="col-md-6 ps-0 mb-3">
-            <label class="form-label p-0 mb-3">Jam Kehadiran (Optional)</label>
-            <input type="time" name="jam_kehadiran_3" class="form-control shadow-none" value="{{ old('jam_kehadiran_3') }}">
-        </div>
+<div class="col-md-6 ps-0 mb-3">
+    <label class="form-label mb-3">Nama Security 3 (Optional)</label>
+    <input type="text" name="nama_security_3" id="nama_security_3" class="form-control shadow-none" value="{{ old('nama_security_3') }}">
+</div>
+
+<div class="col-md-6 ps-0 mb-3">
+    <label class="form-label p-0 mb-3">Jam Kehadiran (Optional)</label>
+    <input type="time" name="jam_kehadiran_3" id="jam_kehadiran_3" class="form-control shadow-none" disabled>
+</div>
+
+
+
 
         <div class="col-md-6 ps-0 mb-3">
     <label class="form-label p-0 mb-3">Tanggal Shift</label>

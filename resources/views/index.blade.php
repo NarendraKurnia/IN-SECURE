@@ -44,8 +44,9 @@
 				</div>
                 <!-- Jeda konten -->
                 <div class="news-cardguidebook" style="display: flex; justify-content: center; align-items: center;">
-                <img src="{{ asset('umum/images/icon-stopelecehan.png') }}" alt="Berita PLN">
+                    <img src="{{ asset('umum/images/icon-stopelecehan.png') }}" alt="Berita PLN" class="img-fluid" style="max-width: 100%; height: auto;">
                 </div>
+
 				<div class="news-textterusbekembang">
                     <h4 class="mt-4" style="font-size: 1.em; color: black; font-weight: bold;">B. Bebas Kekerasan dan Pelecehan</h4>
                     <h5 class="text-justify mt-2" style="font-size: 1.1em; color: black; text-indent: 30px;">Tidak melakukan 

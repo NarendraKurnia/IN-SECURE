@@ -94,22 +94,19 @@ class ShiftmasukController extends Controller
 {
     $request->validate([
         'nama_security_1' => 'required|string|max:100',
-        'jam_kehadiran_1' => 'required',
         'nama_security_2' => 'required|string|max:100',
-        'jam_kehadiran_2' => 'required',
         'nama_security_3' => 'nullable|string|max:100',
         'jam_kehadiran_3' => 'nullable',
-        // 'tanggal_shift'   => 'required|date_format:d-m-Y', // dihapus, karena tidak dikirim
         'shift'           => 'required|in:Pagi,Siang,Malam',
         'foto'            => 'required|image|mimes:jpeg,png,jpg|max:8024'
     ]);
 
-    // Generate tanggal_shift dari backend
     $now = Carbon::now();
-    $shift = $request->shift;
+    $jamSekarang = $now->format('H:i');
 
-    if ($shift === 'Malam' && $now->format('H') < 6) {
-        $tanggal_shift = $now->subDay()->format('Y-m-d');
+    // Penanganan tanggal shift jika shift malam di jam 00:00 - 05:59
+    if ($request->shift === 'Malam' && $now->format('H') < 6) {
+        $tanggal_shift = $now->copy()->subDay()->format('Y-m-d');
     } else {
         $tanggal_shift = $now->format('Y-m-d');
     }
@@ -122,27 +119,32 @@ class ShiftmasukController extends Controller
         $file->move(public_path('admin/upload/shift'), $nama_file);
     }
 
-    // Siapkan array data sesuai kolom
+    // Ambil jam kehadiran 3 hanya jika nama security 3 diisi
+    $jam_kehadiran_3 = null;
+    if (!empty($request->nama_security_3)) {
+        $jam_kehadiran_3 = $request->jam_kehadiran_3 ?: $jamSekarang;
+    }
+
     $data = [
         'nama_security_1' => $request->nama_security_1,
-        'jam_kehadiran_1' => $request->jam_kehadiran_1,
+        'jam_kehadiran_1' => $jamSekarang,
         'nama_security_2' => $request->nama_security_2,
-        'jam_kehadiran_2' => $request->jam_kehadiran_2,
+        'jam_kehadiran_2' => $jamSekarang,
         'nama_security_3' => $request->nama_security_3,
-        'jam_kehadiran_3' => $request->jam_kehadiran_3,
+        'jam_kehadiran_3' => $jam_kehadiran_3,
         'tanggal_shift'   => $tanggal_shift,
         'shift'           => $request->shift,
         'foto'            => $nama_file,
         'tanggal_update'  => now(),
     ];
 
-    // Simpan data
+    // Simpan ke database
     $m_shift = new Shiftmasuk_Model();
     $m_shift->tambah($data);
 
-    return redirect('security/shift-masuk')
-        ->with('sukses', 'Data shift berhasil ditambahkan');
+    return redirect('security/shift-masuk')->with('sukses', 'Data shift berhasil ditambahkan');
 }
+
 
 
     // Delete

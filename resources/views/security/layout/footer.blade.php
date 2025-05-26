@@ -228,6 +228,34 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const nama3 = document.getElementById("nama_security_3");
+        const jam3 = document.getElementById("jam_kehadiran_3");
+
+        // Fungsi untuk ambil waktu lokal sekarang dalam format "HH:MM"
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toTimeString().slice(0, 5);
+        }
+
+        // Event saat user mengetik nama
+        nama3.addEventListener("input", function () {
+            if (nama3.value.trim() !== "") {
+                // Hanya set jam & disable jika jam masih kosong
+                if (jam3.value === "") {
+                    jam3.disabled = false; // Aktifkan sejenak
+                    jam3.value = getCurrentTime(); // Isi otomatis
+                    jam3.disabled = true; // Langsung disable kembali
+                }
+            } else {
+                jam3.disabled = true;
+                jam3.value = ""; // Kosongkan jika nama dihapus
+            }
+        });
+    });
+</script>
+
 
 
 

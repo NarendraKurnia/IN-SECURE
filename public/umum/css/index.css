@@ -112,7 +112,7 @@
     text-decoration: underline;
 }
 .news-cardguidebook img {
-    width: 700px; /* Ukuran ikon */
+    width: 100px; /* Ukuran ikon */
     height: auto;
     display: block;
     margin: 0 auto; /* Agar gambar berada di tengah */

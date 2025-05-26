@@ -22,6 +22,8 @@ Route::get('security/logout', 'App\Http\Controllers\Security\LoginController@log
 
 // Dashboard
 Route::get('security/dashboard', [DashboardController::class, 'index']);
+Route::get('security/dashboard/cetak/{nama_security}', [DashboardController::class, 'cetak'])->name('dashboard.cetak');
+
 
 // user
 Route::get('security/user', 'App\Http\Controllers\Security\UserController@index');
