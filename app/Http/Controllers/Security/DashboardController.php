@@ -54,7 +54,7 @@ if (!$catatan_terakhir) {
         ->countBy();
 
     return view('security/layout/wrapper', [
-        'title' => 'Dashboard Admin',
+        'title' => 'Dashboard',
         'unit' => $unit,
         'content' => 'security/dashboard/index',
         'total_shift_masuk' => $total_shift_masuk,

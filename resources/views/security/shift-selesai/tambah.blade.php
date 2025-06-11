@@ -26,7 +26,7 @@
 
         <div class="col-md-6 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Jam Selesai</label>
-            <input type="time" name="jam_selesai_1" class="form-control shadow-none" value="{{ old('jam_kehadiran_1') }}" required>
+            <input type="time" name="jam_selesai_1" class="form-control shadow-none" value="{{ old('jam_selesai_1', $currentTime) }}" readonly required>
         </div>
 
         <div class="col-md-6 ps-0 mb-3">
@@ -36,17 +36,17 @@
 
         <div class="col-md-6 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Jam Selesai</label>
-            <input type="time" name="jam_selesai_2" class="form-control shadow-none" value="{{ old('jam_kehadiran_2') }}" required>
+            <input type="time" name="jam_selesai_2" class="form-control shadow-none" value="{{ old('jam_selesai_2', $currentTime) }}" readonly required>
         </div>
 
         <div class="col-md-6 ps-0 mb-3">
             <label class="form-label mb-3">Nama Security 3 (Optional)</label>
-            <input type="text" name="nama_security_3" class="form-control shadow-none" value="{{ old('nama_security_3') }}">
+            <input type="text" id="nama_security_3" name="nama_security_3" class="form-control shadow-none" value="{{ old('nama_security_3') }}">
         </div>
 
         <div class="col-md-6 ps-0 mb-3">
             <label class="form-label p-0 mb-3">Jam Selesai (Optional)</label>
-            <input type="time" name="jam_selesai_3" class="form-control shadow-none" value="{{ old('jam_kehadiran_3') }}">
+            <input type="time" id="jam_selesai_3" name="jam_selesai_3" class="form-control shadow-none" value="{{ old('jam_selesai_3', $currentTime) }}" disabled>
         </div>
 
         <div class="col-md-6 ps-0 mb-3">

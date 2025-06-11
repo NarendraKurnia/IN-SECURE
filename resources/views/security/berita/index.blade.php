@@ -58,7 +58,7 @@
                 @endif
             </td>
             <td>{{ $item->judul }}</td>
-            <td>{{ Str::limit($item->isi, 1000) }}</td> {{-- Isi berita dipotong jika terlalu panjang --}}
+            <td>{{ Str::limit(strip_tags($item->isi),100) }}</td> {{-- Isi berita dipotong jika terlalu panjang --}}
             <td>{{ $item->unit ? $item->unit->nama : 'Tidak ada unit' }}</td>
             <td>{{ $item->tanggal_update ?? '-' }}</td> {{-- Gunakan tanda '-' jika null --}}
             <td>

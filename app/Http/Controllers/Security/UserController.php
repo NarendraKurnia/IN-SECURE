@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Models\User_model;
 use App\Models\Unit;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -133,5 +135,57 @@ class UserController extends Controller
           
          return redirect('security/user')->with(['sukses' => 'Data Telah Dihapus']);
     }
+    // Tampilkan form ganti password
+    public function ganti_password()
+{
+    $id_user = session('id_user');
+    $m_user = new User_model();
+    $user = $m_user->detail($id_user);
+
+    if (!$user) {
+        return redirect()->route('user.ganti_password')->with(['warning' => 'User tidak ditemukan.']);
+    }
+
+    $data = [
+        'title'   => 'Ganti Password',
+        'user'    => $user,
+        'content' => 'security/user/ganti_password' // sesuai struktur
+    ];
+
+    return view('security/layout/wrapper', $data);
+}
+
+    // Proses perubahan password
+    public function proses_ganti_password(Request $request)
+    {
+        $request->validate([
+            'old_password'              => 'required',
+            'new_password'              => 'required|min:6|max:32|confirmed',
+            'new_password_confirmation' => 'required'
+        ]);
+
+        $id_user = session('id_user');
+        $m_user = new User_model();
+        $user = $m_user->detail($id_user);
+
+        if (!$user) {
+            return redirect()->route('user.ganti_password')->with(['warning' => 'User tidak ditemukan.']);
+        }
+
+        // Verifikasi password lama
+        if (sha1($request->old_password) !== $user->password) {
+            return redirect()->route('user.ganti_password')->with(['warning' => 'Password lama salah.']);
+        }
+
+        // Simpan password baru
+        $m_user->edit([
+            'id_user'  => $id_user,
+            'password' => sha1($request->new_password),
+        ]);
+
+       return redirect()->route('security.dashboard')->with('sukses', 'Password berhasil diubah.');
+
+    }
+
 
 }

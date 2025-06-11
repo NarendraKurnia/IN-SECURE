@@ -21,7 +21,7 @@ Route::get('security/logout', 'App\Http\Controllers\Security\LoginController@log
 
 
 // Dashboard
-Route::get('security/dashboard', [DashboardController::class, 'index']);
+Route::get('security/dashboard', [DashboardController::class, 'index'])->name('security.dashboard');
 Route::get('security/dashboard/cetak/{nama_security}', [DashboardController::class, 'cetak'])->name('dashboard.cetak');
 
 
@@ -32,6 +32,8 @@ Route::post('security/user/proses-tambah', 'App\Http\Controllers\Security\UserCo
 Route::get('security/user/edit/{id}', 'App\Http\Controllers\Security\UserController@edit');
 Route::post('security/user/proses-edit', 'App\Http\Controllers\Security\UserController@proses_edit');
 Route::post('security/user/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
+Route::get('security/user/ganti-password', [UserController::class, 'ganti_password'])->name('user.ganti_password');
+Route::post('security/user/ganti-password/proses', [UserController::class, 'proses_ganti_password'])->name('user.proses_ganti_password');
 
 // Berita
 Route::get('security/berita', 'App\Http\Controllers\Security\BeritaController@index')->name('berita.index');

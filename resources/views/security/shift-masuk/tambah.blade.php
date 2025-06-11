@@ -29,7 +29,7 @@
 </div>
 
 <div class="col-md-6 ps-0 mb-3">
-    <label class="form-label p-0 mb-3">Jam Kehadiran</label>
+    <label class="form-label p-0 mb-3">Jam Mulai</label>
     <input type="time" name="jam_kehadiran_1" class="form-control shadow-none" value="{{ $currentTime }}" disabled>
 </div>
 
@@ -39,7 +39,7 @@
 </div>
 
 <div class="col-md-6 ps-0 mb-3">
-    <label class="form-label p-0 mb-3">Jam Kehadiran</label>
+    <label class="form-label p-0 mb-3">Jam Mulai</label>
     <input type="time" name="jam_kehadiran_2" class="form-control shadow-none" value="{{ $currentTime }}" disabled>
 </div>
 
@@ -49,7 +49,7 @@
 </div>
 
 <div class="col-md-6 ps-0 mb-3">
-    <label class="form-label p-0 mb-3">Jam Kehadiran (Optional)</label>
+    <label class="form-label p-0 mb-3">Jam Mulai (Optional)</label>
     <input type="time" name="jam_kehadiran_3" id="jam_kehadiran_3" class="form-control shadow-none" disabled>
 </div>
 

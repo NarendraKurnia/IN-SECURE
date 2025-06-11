@@ -255,7 +255,42 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const namaSecurity3 = document.getElementById('nama_security_3');
+        const jamSelesai3 = document.getElementById('jam_selesai_3');
 
+        function setJamSelesai() {
+            if (namaSecurity3.value.trim() === '') {
+                // Kosongkan jam selesai 3 jika nama security 3 kosong
+                jamSelesai3.value = '';
+            } else {
+                // Jika ada isian, isi jam selesai 3 dengan waktu sekarang (HH:mm)
+                const now = new Date();
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                jamSelesai3.value = `${hours}:${minutes}`;
+            }
+        }
+
+        // Jalankan saat load halaman (supaya nilai otomatis benar)
+        setJamSelesai();
+
+        // Jalankan tiap kali input nama security 3 berubah
+        namaSecurity3.addEventListener('input', setJamSelesai);
+    });
+</script>
+
+<script>
+function togglePassword(id) {
+    const input = document.getElementById(id);
+    if (input.type === "password") {
+        input.type = "text";
+    } else {
+        input.type = "password";
+    }
+}
+</script>
 
 
 

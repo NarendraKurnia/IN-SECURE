@@ -3,7 +3,7 @@
     <!-- Brand Logo -->
     <a href="{{asset('dasbor') }}" class="brand-link">
       <img src="{{asset('dist/img/Logo_PLN.png') }}" alt="AdminLTE Logo" class="brand-image elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Harmoni Administrator</span>
+      <span class="brand-text font-weight-light">IN-SECURE Administrator</span>
     </a>
 
     <!-- Sidebar -->

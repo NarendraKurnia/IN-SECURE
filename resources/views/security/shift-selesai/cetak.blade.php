@@ -28,7 +28,7 @@
             <td>{{ $shift->nama_security_1 }}</td>
         </tr>
         <tr>
-            <td class="label">Jam Kehadiran:</td>
+            <td class="label">Jam Selesai:</td>
             <td>{{ $shift->jam_selesai_1 }}</td>
         </tr>
         <tr>
@@ -36,7 +36,7 @@
             <td>{{ $shift->nama_security_2 }}</td>
         </tr>
         <tr>
-            <td class="label">Jam Kehadiran:</td>
+            <td class="label">Jam Selesai:</td>
             <td>{{ $shift->jam_selesai_2 }}</td>
         </tr>
         <tr>
@@ -44,7 +44,7 @@
             <td>{{ $shift->nama_security_3 }}</td>
         </tr>
         <tr>
-            <td class="label">Jam Kehadiran:</td>
+            <td class="label">Jam Selesai:</td>
             <td>{{ $shift->jam_selesai_3 }}</td>
         </tr>
         <tr>

@@ -93,7 +93,10 @@
           <a href="#" class="dropdown-item">
           <i class="fas fa-sitemap mr-2"></i> {{ $unit->nama ?? 'Unit Tidak Diketahui' }}
           </a>
-
+          <div class="dropdown-divider"></div>
+          <a href="{{ route('user.ganti_password') }}" class="dropdown-item">
+    <i class="fas fa-key mr-2"></i> Ganti Password
+</a>
           <div class="dropdown-divider"></div>
           <a href="{{ asset('security/logout') }}" class="dropdown-item dropdown-footer text-danger"><i class="fa fa-sign-out-alt"></i>
           Logout</a>

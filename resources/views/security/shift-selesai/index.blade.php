@@ -56,9 +56,7 @@
 
             <td>{{ $item->shift }}</td>
             <td>
-            {{ \Carbon\Carbon::parse($item->tanggal_update, 'UTC')
-                ->setTimezone('Asia/Jakarta')
-                ->format('d-m-Y H:i:s') }}
+            {{ \Carbon\Carbon::parse($item->tanggal_update)->format('d-m-Y H:i:s') }}
             </td>
             <td>
                 <div class="btn-group">

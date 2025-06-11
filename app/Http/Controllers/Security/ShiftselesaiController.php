@@ -54,74 +54,80 @@ class ShiftselesaiController extends Controller
             'content'       => 'security/shift-selesai/index'
         ]);
     }
+
     // Form tambah
     public function tambah()
     {
+        // Ambil jam device sekarang dengan format HH:mm (24 jam) untuk input type="time"
+        $currentTime = Carbon::now()->format('H:i');
+
         return view('security/layout/wrapper', [
-            'title'   => 'Selesai Shift',
-            'content' => 'security/shift-selesai/tambah'
+            'title'       => 'Selesai Shift',
+            'content'     => 'security/shift-selesai/tambah',
+            'currentTime' => $currentTime,
         ]);
     }
 
     public function proses_tambah(Request $request)
-{
-    $request->validate([
-        'nama_security_1'        => 'required|string|max:100',
-        'jam_selesai_1'          => 'required',
-        'nama_security_2'        => 'required|string|max:100',
-        'jam_selesai_2'          => 'required',
-        'nama_security_3'        => 'nullable|string|max:100',
-        'jam_selesai_3'          => 'nullable',
-        'lampu'                  => 'required|in:Sudah,Belum',
-        'membuka_kunci'          => 'required|in:Sudah,Belum',
-        'mengunci_pintu'         => 'required|in:Sudah,Belum',
-        'uraian_kegiatan'        => 'required|string',
-        'catatan_shift_selanjutnya' => 'required|string',
-        'shift'                  => 'required|in:Pagi,Siang,Malam',
-        'foto'                   => 'required|image|mimes:jpeg,png,jpg|max:8024',
-    ]);
+    {
+        $request->validate([
+            'nama_security_1'        => 'required|string|max:100',
+            'jam_selesai_1'          => 'required',
+            'nama_security_2'        => 'required|string|max:100',
+            'jam_selesai_2'          => 'required',
+            'nama_security_3'        => 'nullable|string|max:100',
+            'jam_selesai_3'          => 'nullable',
+            'lampu'                  => 'required|in:Sudah,Belum',
+            'membuka_kunci'          => 'required|in:Sudah,Belum',
+            'mengunci_pintu'         => 'required|in:Sudah,Belum',
+            'uraian_kegiatan'        => 'required|string',
+            'catatan_shift_selanjutnya' => 'required|string',
+            'shift'                  => 'required|in:Pagi,Siang,Malam',
+            'foto'                   => 'required|image|mimes:jpeg,png,jpg|max:8024',
+        ]);
 
-    // Otomatisasi tanggal_shift
-    $now = Carbon::now();
-    $shift = $request->shift;
+        // Otomatisasi tanggal_shift
+        $now = Carbon::now();
+        $shift = $request->shift;
 
-    if ($shift === 'Malam' && $now->format('H') < 6) {
-        $tanggal_shift = $now->subDay()->format('Y-m-d');
-    } else {
-        $tanggal_shift = $now->format('Y-m-d');
+        if ($shift === 'Malam' && $now->format('H') < 6) {
+            $tanggal_shift = $now->subDay()->format('Y-m-d');
+        } else {
+            $tanggal_shift = $now->format('Y-m-d');
+        }
+
+        // Upload foto
+        $nama_file = null;
+        if ($file = $request->file('foto')) {
+            $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $nama_file = \Str::slug($filename, '-') . '-' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('admin/upload/shift-selesai'), $nama_file);
+        }
+
+        $data = [
+            'nama_security_1'        => $request->nama_security_1,
+            'jam_selesai_1'          => $request->jam_selesai_1,
+            'nama_security_2'        => $request->nama_security_2,
+            'jam_selesai_2'          => $request->jam_selesai_2,
+            'nama_security_3'        => $request->nama_security_3,
+            'jam_selesai_3'          => $request->jam_selesai_3,
+            'lampu'                  => $request->lampu,
+            'membuka_kunci'          => $request->membuka_kunci,
+            'mengunci_pintu'         => $request->mengunci_pintu,
+            'uraian_kegiatan'        => $request->uraian_kegiatan,
+            'catatan_shift_selanjutnya' => $request->catatan_shift_selanjutnya,
+            'tanggal_shift'          => $tanggal_shift,
+            'shift'                  => $shift,
+            'foto'                   => $nama_file,
+            'tanggal_update'         => now(),
+        ];
+
+        $m_shift = new Shiftselesai_Model();
+        $m_shift->tambah($data);
+
+        return redirect('security/shift-selesai')->with('sukses', 'Data shift berhasil ditambahkan');
     }
 
-    // Upload foto
-    $nama_file = null;
-    if ($file = $request->file('foto')) {
-        $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $nama_file = \Str::slug($filename, '-') . '-' . time() . '.' . $file->getClientOriginalExtension();
-        $file->move(public_path('admin/upload/shift-selesai'), $nama_file);
-    }
-
-    $data = [
-        'nama_security_1'        => $request->nama_security_1,
-        'jam_selesai_1'          => $request->jam_selesai_1,
-        'nama_security_2'        => $request->nama_security_2,
-        'jam_selesai_2'          => $request->jam_selesai_2,
-        'nama_security_3'        => $request->nama_security_3,
-        'jam_selesai_3'          => $request->jam_selesai_3,
-        'lampu'                  => $request->lampu,
-        'membuka_kunci'          => $request->membuka_kunci,
-        'mengunci_pintu'         => $request->mengunci_pintu,
-        'uraian_kegiatan'        => $request->uraian_kegiatan,
-        'catatan_shift_selanjutnya' => $request->catatan_shift_selanjutnya,
-        'tanggal_shift'          => $tanggal_shift,
-        'shift'                  => $shift,
-        'foto'                   => $nama_file,
-        'tanggal_update'         => now(),
-    ];
-
-    $m_shift = new Shiftselesai_Model();
-    $m_shift->tambah($data);
-
-    return redirect('security/shift-selesai')->with('sukses', 'Data shift berhasil ditambahkan');
-}
     // Delete
     public function delete($id)
     {
@@ -142,6 +148,7 @@ class ShiftselesaiController extends Controller
         return redirect('security/shift-selesai')
             ->with('sukses', 'Data berhasil dihapus');
     }
+
     public function cetak($id)
     {
         $unit_id = session()->get('unit_id');
@@ -183,5 +190,4 @@ class ShiftselesaiController extends Controller
         // Kirim ke view cetak
         return view('security.shift-selesai.cetak', compact('shift', 'unit'));
     }
-
 }
