@@ -9,9 +9,11 @@ use App\Http\Controllers\Security\ShiftselesaiController;
 use App\Http\Controllers\Security\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Security\UserController;
+use App\Http\Controllers\Api\DashboardApiController;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/berita/{id}', [HomeController::class, 'detailBerita'])->name('berita.detail');
+
 
 //halaman login
 Route::get('security/login', 'App\Http\Controllers\Security\LoginController@index')->name('security.login');
@@ -23,6 +25,7 @@ Route::get('security/logout', 'App\Http\Controllers\Security\LoginController@log
 // Dashboard
 Route::get('security/dashboard', [DashboardController::class, 'index'])->name('security.dashboard');
 Route::get('security/dashboard/cetak/{nama_security}', [DashboardController::class, 'cetak'])->name('dashboard.cetak');
+Route::get('rekap-dasbor', [DashboardApiController::class, 'rekap']);
 
 
 // user

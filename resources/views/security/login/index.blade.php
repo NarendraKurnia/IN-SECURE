@@ -77,7 +77,7 @@
       <hr>
 
       <p class="mb-1 text-center">
-        <a href="{{ asset('security/dasbor') }}">Beranda | </a><a href="{{ asset('lupa-password') }}">Lupa password</a>
+        <a href="{{ route('home') }}">Beranda </a>
       </p>
     </div>
     <!-- /.login-card-body -->

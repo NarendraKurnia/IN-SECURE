@@ -6,11 +6,15 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="../../index3.html" class="nav-link">Home</a>
+        <a href="{{ route('home') }}" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li>
+    <a href="https://wa.me/6282228353983?text=Halo%20saya%20ingin%20laporan%20eror%20layanan%20di%20website%20IN-SECURE"
+       target="_blank"
+       class="nav-link text-success">
+        <i class="fab fa-whatsapp"></i> Contact via WhatsApp
+    </a>
+</li>
     </ul>
 
     <!-- Right navbar links -->
@@ -95,8 +99,8 @@
           </a>
           <div class="dropdown-divider"></div>
           <a href="{{ route('user.ganti_password') }}" class="dropdown-item">
-    <i class="fas fa-key mr-2"></i> Ganti Password
-</a>
+              <i class="fas fa-key mr-2"></i> Ganti Password
+          </a>
           <div class="dropdown-divider"></div>
           <a href="{{ asset('security/logout') }}" class="dropdown-item dropdown-footer text-danger"><i class="fa fa-sign-out-alt"></i>
           Logout</a>
